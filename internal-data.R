@@ -10,7 +10,7 @@
 #' @import tibble
 #' @import readr
 
-countries <- readr::read_csv(here::here("app", "data", "countries.csv")) |>
+countries <- readr::read_csv(here::here("data", "countries.csv")) |>
   tibble::as_tibble()
 
 #' SPI-Birds' species taxonomic ranks and codes
@@ -25,7 +25,7 @@ countries <- readr::read_csv(here::here("app", "data", "countries.csv")) |>
 #'@import dplyr
 #'@import tidyr
 
-species <- readr::read_csv(here::here("app", "data", "species.csv")) |>
+species <- readr::read_csv(here::here("data", "species.csv")) |>
   tibble::as_tibble() |>
   dplyr::select(id = "speciesID", "genus", "specificEpithet") |>
   tidyr::unite("name", "genus", "specificEpithet", sep = " ") |>
@@ -44,7 +44,7 @@ species <- readr::read_csv(here::here("app", "data", "species.csv")) |>
 #'@rdname habitats
 #'@aliases habitatList
 
-habitats <- readr::read_csv(here::here("app", "data", "habitats.csv")) |>
+habitats <- readr::read_csv(here::here("data", "habitats.csv")) |>
   tibble::as_tibble() |>
   dplyr::select(id = "habitatID", "habitatType") |>
   tidyr::unite("name", "id", "habitatType", sep = ": ", remove = FALSE) |>

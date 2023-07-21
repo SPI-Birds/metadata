@@ -4,7 +4,7 @@
 # User interface with all the input fields
 
 # Read in internal data object
-source(here::here("app", "internal-data.R"))
+source(here::here("internal-data.R"))
 
 # Create app user interface
 ui <- shiny::fluidPage(
