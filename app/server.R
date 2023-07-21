@@ -6,6 +6,10 @@
 #' @param input The session's input object
 #' @param output The session's output object
 
+
+resultsDir <- file.path("metadata")
+dir.create(resultsDir, recursive = TRUE, showWarnings = FALSE)
+
 # Set app server
 server <- function(input, output) {
 
@@ -336,7 +340,7 @@ server <- function(input, output) {
     ### This code chunk writes a response and will have to change
     ### based on where we store persistent data
     utils::write.csv(x = infoList,
-                     file = file.path("metadata", fileName),
+                     file = file.path(resultsDir, fileName),
                      row.names = FALSE)
 
     # Indicate the the form was submitted to show a thank you page so that the

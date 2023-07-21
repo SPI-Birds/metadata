@@ -4,7 +4,7 @@
 # User interface with all the input fields
 
 # Read in internal data object
-source("internal-data.R")
+source(here::here("app", "internal-data.R"))
 
 # Create app user interface
 ui <- shiny::fluidPage(
@@ -415,7 +415,6 @@ ui <- shiny::fluidPage(
     shiny::tags$br(),
     shiny::h3("Study Information"),
 
-    #TODO: Add study site name, size, and major site changes
     shiny::textInput(inputId = "title",
                      width = htmltools::validateCssUnit("50%"),
                      label = shiny::div("Name of the study site",
