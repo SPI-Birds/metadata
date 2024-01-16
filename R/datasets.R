@@ -1,4 +1,4 @@
-#' EUNIS habitat classification
+#' List of EUNIS habitats
 #'
 #' SPI-Birds uses European Nature Information System (EUNIS) habitat classification scheme (version 2012, with major updates in 2022) for describing the habitat at a location. The EUNIS classification is hierarchical (up to eight levels), indicated by the length of characters. Data custodians are asked to provide the highest level of detail when possible.
 #' @format
