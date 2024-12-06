@@ -4,6 +4,8 @@
 #' for documenting research data in the fields of ecology and environmental sciences. EML
 #' is the standard used by SPI-Birds to structure metadata of studies and associated datasets.
 #'
+#' @param email Character indicating the email address with which you have access to the SPI-Birds metadata sheet
+#'
 #' @importFrom lubridate year
 #' @importFrom tidyselect where
 #' @importFrom forcats fct_relevel
@@ -11,9 +13,11 @@
 #' @importFrom purrr map
 #' @importFrom httr GET
 #' @importFrom jsonlite fromJSON
+#' @importFrom tibble tibble
+#' @importFRom uuid UUIDgenerate
 #' @export
 
-convert_to_eml <- function() {
+convert_to_eml <- function(email) {
 
   # Load metadata from Google Drive
   metadata <- read_metadata(email = email)
@@ -464,6 +468,562 @@ convert_to_eml <- function() {
 
                             })
 
+  # Add <taxonomicCoverage> to <coverage>
+  coverage$taxonomicCoverage <- list(taxonomicClassification = nested_taxa)
+
+  # <project>
+  # <title>
+  project_title <- title
+
+  # <personnel>
+  # Project Members in Jotform
+  # People who have contributed to running the field study. Also refer to:
+  # Creator, Metadata Provider, Contact
+
+  person_refs <- tibble::tibble(
+    id = character(),
+    role = character()
+  )
+
+  if(entry$creator_entity == "a person") {
+
+    person_refs <- person_refs %>%
+      dplyr::add_row(
+        id = creator$id,
+        role = "dataCustodian"
+      )
+
+  }
+
+  if(!is.null(metadataProvider$id)) {
+
+    person_refs <- person_refs %>%
+      dplyr::add_row(
+        id = metadataProvider$id,
+        role = "metadataProvider"
+      )
+
+  }
+
+  if(!is.null(contact$id)) {
+
+    person_refs <- person_refs %>%
+      dplyr::add_row(
+        id = contact$id,
+        role = "pointOfContact"
+      )
+
+  }
+
+  # Add as reference to <personnel>
+  personnelReferences <- purrr::pmap(.l = list(person_refs$id,
+                                               person_refs$role),
+                                     .f = ~{
+
+                                       list(references = ..1,
+                                            role = ..2)
+
+                                     })
+
+  # Add other personnel, if provided
+  if(!is.na(entry$personnel)) {
+
+    # Separate info in list in case there are multiple persons
+    otherPersonnel <- purrr::map(.x = stringr::str_split_1(entry$personnel, "\n"),
+                                 .f = ~{
+
+                                   # Split info per person
+                                   person_info <- stringr::str_split_1(string = .x,
+                                                                       pattern = "^([^:]*):\\s|,\\s([^:]*):\\s|,\\s([^:]*):")[-1]
+
+                                   # Verify whether the email address may be displayed
+                                   if(person_info[5] == "Yes") {
+
+                                     personEmail <- person_info[4]
+
+                                   } else if(person_info[5] == "No") {
+
+                                     personEmail <- NULL
+
+                                   }
+
+                                   if(person_info[7] == "" | is.na(person_info[7])) {
+
+                                     user_id <- NULL
+
+                                   } else {
+
+                                     user_id <- list(directory = "https://orcid.org/",
+                                                     userId = person_info[7])
+
+                                   }
+
+                                   list(individualName = list(givenName = person_info[1],
+                                                              surName = person_info[2]),
+                                        organizationName = person_info[3],
+                                        role = tolower(person_info[6]),
+                                        electronicMailAddress = personEmail,
+                                        userId = user_id)
+
+                                 })
+
+  } else {
+
+    otherPersonnel <- NULL
+
+  }
+
+  personnel <- c(personnelReferences, otherPersonnel)
+
+  # <funding>
+  if(!is.na(entry$funding)) {
+
+    funding <- list(para = stringr::str_replace_all(entry$funding, "\r\n", "; "))
+
+  } else {
+
+    funding <- NULL
+
+  }
+
+  # <studyAreaDescription>
+  # <habitat>
+  # Set habitat (levels 1-3 of EUNIS habitat code)
+  habitats <- stringr::str_split_1(entry$studyAreaDescription_habitat, "\\s*(\r\n)+| \\| ") %>%
+    stringr::str_split("\\: ")
+
+  # Split when multiple other habitats are provided
+  if(!is.na(entry$studyAreaDescription_otherHabitat)) {
+
+    otherHabitats_split <- stringi::stri_remove_empty(
+      stringr::str_split_1(string = entry$studyAreaDescription_otherHabitat,
+                           pattern = "(,|\\||;)\\s*"))
+
+    # Extract each higher level of EUNIS habitat code
+    # For example, if data custodian provided a level-6 habitat, also extract levels 4 and 5.
+    otherHabitats_codes <- purrr::map(.x = otherHabitats_split,
+                                      .f = ~{
+
+                                        if(stringr::str_detect(.x, "X", negate = TRUE)) {
+
+                                          all_codes <- stringr::str_sub(.x, 1, nchar(.x):1)
+
+                                          # Set impossible habitat codes (ending in '.') to NA
+                                          all_codes <- all_codes[stringr::str_ends(all_codes,
+                                                                                   pattern = "\\.",
+                                                                                   negate = TRUE)]
+
+                                          # Habitat code X is not fully hierarchical, e.g., X2 is not a higher level code of X23.
+                                          # So only select higher level X
+                                        } else {
+
+                                          all_codes <- stringr::str_sub(.x, 1, 1)
+
+                                        }
+
+                                      }) %>%
+      purrr::list_c() %>%
+      unique()
+
+    # Add habitat type descriptions to codes
+    otherHabitats <- purrr::map(.x = otherHabitats_codes,
+                                .f = ~{
+
+                                  habitat_codes %>%
+                                    dplyr::filter(habitatID == .x) %>%
+                                    dplyr::mutate(habitatList = purrr::map2(.x = habitatID,
+                                                                            .y = habitatType,
+                                                                            .f = ~{
+
+                                                                              c(.x, .y)
+
+                                                                            })) %>%
+                                    dplyr::select("habitatLevel", "habitatList")
+
+                                }) %>%
+      purrr::list_rbind() %>%
+      dplyr::arrange(habitatLevel) %>%
+      dplyr::pull(habitatList)
+
+
+    # Concatenate otherHabitats with selected habitats, and keep unique codes
+    habitats <- c(habitats, otherHabitats) %>% unique()
+
+  }
+
+  habitat_list = purrr::map(.x = habitats,
+                            .f = ~{
+
+                              list(
+                                citableClassificationSystem = "true",
+                                name = "EUNIS habitat code",
+                                descriptorValue = list(descriptorValue = .x[2],
+                                                       name_or_id = .x[1])
+                              )
+
+                            })
+  # Add habitats & surface area to <studyAreaDescription>
+  studyAreaDescription <- list(descriptor = list(habitat_list,
+                                                 list(citableClassificationSystem = "false",
+                                                      name = "physical",
+                                                      descriptorValue = list(descriptorValue = paste(entry$studyAreaDescription_studySiteSize,
+                                                                                                     "ha"),
+                                                                             name_or_id = "surface area"))))
+
+  # <designDescription>
+  # Set major site changes & nest box information as part of <designDescription>
+  if(!is.na(entry$studyAreaDescription_nestboxes)) {
+
+    nestBoxes <- list(para = paste0("The field study monitors artificial nest boxes",
+                                    ", with a minimum of ", entry$studyAreaDescription_minimumNestBoxes,
+                                    " and a maximum of ", entry$studyAreaDescription_maximumNestBoxes,
+                                    " throughout the study period.")
+    )
+
+  } else {
+
+    nestBoxes <- NULL
+
+  }
+
+  if(!is.na(entry$studyAreaDescription_studySiteChanges)) {
+
+    studySiteChanges <- list(para = paste("Information related to (major) changes to the study site,",
+                                          "supplied by the metadata provider:",
+                                          entry$studyAreaDescription_studySiteChanges))
+
+  } else {
+
+    studySiteChanges <- NULL
+
+  }
+
+  # Gap years in monitoring
+  if(entry$temporalCoverage_continuous == "No") {
+
+    gapYears <- list(para = paste0("The data were not collected continuously over the study period as indicated by the temporal coverage.",
+                                   "Data are missing from", stringr::str_replace_all(entry$temporalCoverage_gaps,
+                                                                                     pattern = "\r\n\\s*(\r\n)+| \\| ",
+                                                                                     replacement = ", ")))
+
+  } else if(entry$temporalCoverage_continuous == "Yes") {
+
+    gapYears <- NULL
+
+  }
+
+  # Link to website describing study
+  if(!is.na(entry$studyAreaDescription_url)) {
+
+    studyUrl <- list(para = paste("Link to website that describes project/field study:",
+                                  entry$studyAreaDescription_url))
+
+  } else {
+
+    studyUrl <- NULL
+
+  }
+
+  # Combine all in <designDescription>
+  designDescription <- list(description = list(nestBoxes, studySiteChanges, gapYears, studyUrl))
+
+  # Finalise <project>
+  project <- list(title = project_title,
+                  personnel = personnel,
+                  funding = funding,
+                  studyAreaDescription = studyAreaDescription,
+                  designDescription = designDescription)
+
+  # <methods>
+  # Types of data collected
+  ## Tag types
+  tagTypes <- stringr::str_split_1(entry$methods_tagTypes, "\r\n")
+
+  if(!is.na(entry$methods_otherTagTypes)) {
+
+    otherTagTypes <-  paste0("Other tags used/additional details supplied by the metadata provider: ",
+                             paste0(stringr::str_split_1(entry$methods_otherTagTypes, "\r\n|\\s*(\r\n)+| \\| "),
+                                    collapse = ", "), ".")
+
+  } else {
+
+    otherTagTypes <- NULL
+
+  }
+
+  tagging <- list(description = list(para = list("Tagging",
+                                                 paste0("Birds were fitted with tags (i.e., ",
+                                                        paste0(tagTypes, collapse = ", "),
+                                                        ") to monitor the development and life histories of individuals."),
+                                                 otherTagTypes)))
+
+  ## Individual data & genetic data
+  individualDataTypes <- stringr::str_split_1(entry$methods_individualDataTypes, "\r\n")
+
+  if(!is.na(entry$methods_otherIndividualDataTypes)) {
+
+    otherIndividualDataTypes <-  paste0("Other individual-level data collected/additional details supplied by the metadata provider: ",
+                                        paste0(stringr::str_split_1(entry$methods_otherIndividualDataTypes, "\r\n|\\s*(\r\n)+| \\| "),
+                                               collapse = ", "), ".")
+
+  } else {
+
+    otherIndividualDataTypes <- NULL
+
+  }
+
+  individual <- list(description = list(para = list("Individual data",
+                                                    paste0("The following individual-level data were collected: ",
+                                                           paste0(individualDataTypes, collapse = ", "), "."),
+                                                    otherIndividualDataTypes)))
+
+  ## Genetic data
+  if(!is.na(entry$methods_geneticDataTypes)) {
+
+    geneticDataTypes <- stringr::str_split_1(entry$methods_geneticDataTypes, "\r\n")
+
+  } else {
+
+    geneticDataTypes <-  NULL
+
+  }
+
+  if(!is.na(entry$methods_otherGeneticDataTypes)) {
+
+    otherGeneticDataTypes <-  paste0("Other genetic data collected/additional details supplied by the metadata provider: ",
+                                     paste0(stringr::str_split_1(entry$methods_otherGeneticDataTypes, "\r\n|\\s*(\r\n)+| \\| "),
+                                            collapse = ", "), ".")
+
+  } else {
+
+    otherGeneticDataTypes <- NULL
+
+  }
+
+  if(all(is.null(geneticDataTypes), is.null(otherGeneticDataTypes))) {
+
+    genetic <- NULL
+
+  } else {
+
+    genetic <- list(description = list(para = list("Genetic data",
+                                                   paste0("The following samples were taken for genetic analysis: ",
+                                                          paste0(geneticDataTypes, collapse = ", "), "."),
+                                                   otherGeneticDataTypes)))
+
+  }
+
+  ## Brood data
+  broodDataTypes <- stringr::str_split_1(entry$methods_broodDataTypes, "\r\n|\n")
+
+  if(!is.na(entry$methods_otherBroodDataTypes)) {
+
+    otherBroodDataTypes <-  paste0("Other brood-level data collected/additional details supplied by the metadata provider: ",
+                                   paste0(stringr::str_split_1(entry$methods_otherBroodDataTypes, "\r\n|\\s*(\r\n)+| \\| "),
+                                          collapse = ", "), ".")
+
+  } else {
+
+    otherBroodDataTypes <- NULL
+
+  }
+
+  brood <- list(description = list(para = list("Brood data",
+                                               paste0("Nests were visited regularly to collect breeding ecology variables (i.e., ",
+                                                      paste0(broodDataTypes, collapse = ", "), ")."),
+                                               otherBroodDataTypes)))
+
+  ## Environmental data
+  if(!is.na(entry$methods_abioticDataTypes)) {
+
+
+    abiotic <- paste0("The following abiotic variables were collected: ",
+                      paste0(stringr::str_split_1(entry$methods_abioticDataTypes, "\r\n"), collapse = ", "), ".")
+
+  } else {
+
+    abiotic <- NULL
+
+  }
+
+  if(!is.na(entry$methods_bioticDataTypes)) {
+
+    biotic <- paste0("The following biotic variables were collected: ",
+                     paste0(stringr::str_split_1(entry$methods_bioticDataTypes, "\r\n"), collapse = ", "), ".")
+
+  } else {
+
+    biotic <- NULL
+
+  }
+
+  if(!is.na(entry$methods_otherEnvironmentalDataTypes)) {
+
+    otherEnvironmentalDataTypes <-  paste0("Other environmental data collected/additional details supplied by the metadata provider: ",
+                                           paste0(stringr::str_split_1(entry$methods_otherEnvironmentalDataTypes, "\r\n|\\s*(\r\n)+| \\| "),
+                                                  collapse = ", "), ".")
+
+  } else {
+
+    otherEnvironmentalDataTypes <- NULL
+
+  }
+
+  if(all(is.null(abiotic), is.null(biotic), is.null(otherEnvironmentalDataTypes))) {
+
+    environmental <- NULL
+
+  } else {
+
+    environmental <- list(description = list(para = list("Environmental data",
+                                                         biotic,
+                                                         abiotic,
+                                                         otherEnvironmentalDataTypes)))
+
+  }
+
+  ## Other activities
+
+  if(!is.na(entry$methods_otherActivities)) {
+
+    otherActivities <- stringr::str_split_1(entry$methods_otherActivities, "\r\n")
+
+  } else {
+
+    otherActivities <- NULL
+
+  }
+
+  if(!is.na(entry$methods_otherOtherActivities)) {
+
+    nonlistedActivities <- entry$methods_otherOtherActivities
+
+  } else {
+
+    nonlistedActivities <- NULL
+
+  }
+
+  if(all(is.null(otherActivities), is.null(nonlistedActivities))) {
+
+    activities <- NULL
+
+  } else {
+
+    activities <- list(description = list(para = list("Other activities",
+                                                      paste0("The following activities were undertaken: ",
+                                                             paste(na.omit(c(otherActivities, nonlistedActivities)), sep = ", "), "."))))
+
+  }
+
+  # Finalise <methods>
+  methods <- list(methodStep = list(tagging, brood, individual, genetic, environmental, activities))
+
+  # Reference publication & literature cited
+  if(!is.na(entry$studyAreaDescription_citation)) {
+
+    citations <- stringr::str_split_1(entry$studyAreaDescription_citation, "; | \\| ")
+
+    # Get bibtex from DOI
+    bibs <- purrr::map(.x = citations,
+                       .f = ~{
+
+                         citation <- stringr::str_remove(string = .x,
+                                                         pattern = "doi:|https://doi.org/|doi.org/")
+
+                         studyAreaBib <- rcrossref::cr_cn(citation, format = "bibtex")
+
+                       })
+
+    # First provided DOI is reference publication
+    # i.e., a citation to an additional publication that serves as an important reference for a datase
+    referencePublication <- list(bibtex = bibs[[1]])
+
+    # Others will be listed as literatureCited
+    # i.e., a citation to articles or products which were referenced in the dataset or its associated metadata.
+    # The list represents the bibliography of works related to the dataset, whether for reference, comparison, or other purposes
+    if(length(bibs) > 1) {
+
+      literatureCited <- list(bibtex = bibs[[-1]])
+
+    } else {
+
+      literatureCited <- NULL
+
+    }
+
+  } else {
+
+    referencePublication <- NULL
+    literatureCited <- NULL
+
+  }
+
+  # Check for UUID in study_codes for existing studies
+  if(study_ids$studyID %in% study_codes$studyID) {
+
+    packageId <- study_codes %>%
+      dplyr::filter(studyID == {{study_ids$studyID}}) %>%
+      dplyr::pull(studyUUID)
+
+    # Generate new UUID for new metadata entries
+  } else {
+
+    packageId <- uuid::UUIDgenerate()
+
+  }
+
+  # <id>
+  system <-  "uuid"
+  alternateIdentifier <- packageId
+
+  # <language>
+  lang <- "en"
+
+  # <pubDate>
+  # This is the submission date when metadata are first submitted, and the last update date when metadata are updated
+  pubDate <- format(max(c(entry$submissionDate, entry$lastUpdateDate),
+                        na.rm = TRUE),
+                    format = "%Y-%m-%d")
+
+  # Construct <eml>
+  fileName <- paste0(paste(packageId, pubDate, sep = "_"), ".xml")
+
+  EML::write_eml(eml = list(dataset = list(title = title,
+                                           alternateIdentifier = list(alternateIdentifier, shortName),
+                                           creator = creator,
+                                           metadataProvider = metadataProvider,
+                                           coverage = coverage,
+                                           project = project,
+                                           methods = methods,
+                                           contact = contact,
+                                           intellectualRights = intellectualRights,
+                                           maintenance = maintenance,
+                                           pubDate = pubDate,
+                                           referencePublication = referencePublication,
+                                           literatureCited = literatureCited),
+                            packageId = packageId,
+                            system = system,
+                            lang = lang),
+                 file = paste0("eml/", fileName),
+                 encoding = "UTF-8")
+
+  # Validate EML
+  validation <- EML::eml_validate(EML::read_eml(paste0("eml/", fileName)))
+
+  if(EML::eml_validate(EML::read_eml(paste0("eml/", fileName))) == TRUE) {
+
+    cat(crayon::cyan("The created EML document is schema-valid.\n"))
+
+  } else {
+
+    stop("The created EML document is not schema-valid. Make fixes to the function.",
+         "\n",
+         paste("Validation error found in:", attr(validation, "errors"), "\n"),
+         call. = FALSE)
+
+  }
+
 }
 
 #' Connect to Google Drive and read SPI-Birds metadata sheet
@@ -575,7 +1135,7 @@ read_metadata <- function(email) {
 #'
 #' Only used within `convert_to_eml()`.
 #'
-#' @param taxa a single-row data frame representing a single metadata entry
+#' @param entry a single-row data frame representing a single metadata entry
 #' @importFrom stringr str_detect
 
 set_study_site_ids <- function(entry) {
