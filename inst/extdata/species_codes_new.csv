@@ -1,0 +1,47 @@
+speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesTSN,kingdom,phylum,class,order,family,genus,specificEpithet,scientificName,scientificNameAuthorship,vernacularName
+10001,PARMAJ,14640,45515267,561864,Metazoa,Chordata,Aves,Passeriformes,Paridae,Parus,major,Parus major,NA,Great tit
+10002,CYACAE,14620,45515265,559612,Metazoa,Chordata,Aves,Passeriformes,Paridae,Cyanistes,caeruleus,Cyanistes caeruleus,Linnaeus 1758,Eurasian blue tit
+10003,FICHYP,13490,45513708,560081,Metazoa,Chordata,Aves,Passeriformes,Muscicapidae,Ficedula,hypoleuca,Ficedula hypoleuca,Pallas 1764,European pied flycatcher
+10004,SITEUR,14790,45513687,563018,Metazoa,Chordata,Aves,Passeriformes,Sittidae,Sitta,europaea,Sitta europaea,NA,Eurasian nuthatch
+10005,PERATE,14610,45515260,561927,Metazoa,Chordata,Aves,Passeriformes,Paridae,Periparus,ater,Periparus ater,Linnaeus 1758,Coal tit
+10006,PASMON,15980,45511015,179630,Metazoa,Chordata,Aves,Passeriformes,Passeridae,Passer,montanus,Passer montanus,Linnaeus 1758,Eurasian tree sparrow
+10007,FICALB,13480,45513709,560071,Metazoa,Chordata,Aves,Passeriformes,Muscicapidae,Ficedula,albicollis,Ficedula albicollis,Temminck 1815,Collared flycatcher
+10008,POEPAL,14400,45515859,562354,Metazoa,Chordata,Aves,Passeriformes,Paridae,Poecile,palustris,Poecile palustris,Linnaeus 1758,Marsh tit
+10009,POECIN,14480,45511441,554384,Metazoa,Chordata,Aves,Passeriformes,Paridae,Poecile,cinctus,Poecile cinctus,Boddaert 1783,Siberian tit
+10010,PHOPHO,11220,45511004,562037,Metazoa,Chordata,Aves,Passeriformes,Muscicapidae,Phoenicurus,phoenicurus,Phoenicurus phoenicurus,Linnaeus 1758,Common redstart
+10011,JYNTOR,08480,45509717,178150,Metazoa,Chordata,Aves,Piciformes,Picidae,Jynx,torquilla,Jynx torquilla,NA,Wryneck
+10012,LOPCRI,14540,45515262,560873,Metazoa,Chordata,Aves,Passeriformes,Paridae,Lophophanes,cristatus,Lophophanes cristatus,Linnaeus 1758,European crested tit
+10013,EMBMEL,18810,45515773,554227,Metazoa,Chordata,Aves,Passeriformes,Emberizidae,Emberiza,melanocephala,Emberiza melanocephala,NA,Black-headed bunting
+10014,PRUMOD,10840,45515701,562489,Metazoa,Chordata,Aves,Passeriformes,Prunellidae,Prunella,modularis,Prunella modularis,Linnaeus 1758,Dunnock
+10015,COLMON,15600,45510000,916629,Metazoa,Chordata,Aves,Passeriformes,Corvidae,Coloeus,monedula,Coloeus monedula,Linnaeus 1758,Western jackdaw
+10016,CERFAM,14860,45513691,178795,Metazoa,Chordata,Aves,Passeriformes,Certhiidae,Certhia,familiaris,Certhia familiaris,NA,Eurasian treecreeper
+10017,STRALU,07610,45518936,555428,Metazoa,Chordata,Aves,Strigiformes,Strigidae,Strix,aluco,Strix aluco,NA,Tawny owl
+10018,SITVAR,14570,1052001,NA,Metazoa,Chordata,Aves,Passeriformes,Paridae,Sittiparus,varius,Sittiparus varius,Temminck & Schlegel 1847,Varied tit
+10019,PARMIN,NA,45518810,916512,Metazoa,Chordata,Aves,Passeriformes,Paridae,Parus,minor,Parus minor,NA,Japanese tit
+10020,STEHIR,06150,45509327,176888,Metazoa,Chordata,Aves,Charadriiformes,Laridae,Sterna,hirundo,Sterna hirundo,NA,Common tern
+10021,THACHL,00151,45511277,554452,Metazoa,Chordata,Aves,Procellariiformes,Diomedeidae,Thalassarche,chlororhynchos,Thalassarche chlororhynchos,Gmelin & JF 1789,Atlantic yellow-nosed albatross
+10022,PHOFUS,35910,45512096,174530,Metazoa,Chordata,Aves,Procellariiformes,Diomedeidae,Phoebetria,fusca,Phoebetria fusca,Hilsenberg 1822,Dark-mantled sooty albatross
+10023,MACGIG,00211,45512099,174594,Metazoa,Chordata,Aves,Procellariiformes,Procellariidae,Macronectes,giganteus,Macronectes giganteus,Gmelin & JF 1789,Antarctic giant-petrel
+10024,DIODAB,36000,45512093,824053,Metazoa,Chordata,Aves,Procellariiformes,Diomedeidae,Diomedea,dabbenena,Diomedea dabbenena,NA,Tristan albatross
+10025,OCELEU,NA,45509015,174628,Metazoa,Chordata,Aves,Procellariiformes,Hydrobatidae,Oceanodroma,leucorhoa,Oceanodroma leucorhoa,Vieillot 1818,Leach's storm petrel
+10026,CALALB,04970,45509224,176669,Metazoa,Chordata,Aves,Charadriiformes,Scolopacidae,Calidris,alba,Calidris alba,Pallas 1764,Sanderling
+10027,PERINF,15430,45518973,561934,Metazoa,Chordata,Aves,Passeriformes,Corvidae,Perisoreus,infaustus,Perisoreus infaustus,Linnaeus 1758,Siberian jay
+10028,POEMON,14420,45518807,562353,Metazoa,Chordata,Aves,Passeriformes,Paridae,Poecile,montanus,Poecile montanus,Conrad von Baldenstein 1827,Willow tit
+10029,TACBIC,09830,45511453,178431,Metazoa,Chordata,Aves,Passeriformes,Hirundinidae,Tachycineta,bicolor,Tachycineta bicolor,Vieillot 1808,Tree swallow
+10030,PASSAN,18260,45511198,179314,Metazoa,Chordata,Aves,Passeriformes,Passerellidae,Passerculus,sandwichensis,Passerculus sandwichensis,Gmelin & JF 1789,Savannah sparrow
+10031,HAEOST,04500,45509143,176469,Metazoa,Chordata,Aves,Charadriiformes,Haematopodidae,Haematopus,ostralegus,Haematopus ostralegus,NA,Eurasian oystercatcher
+10032,PASDOM,15910,45511014,179628,Metazoa,Chordata,Aves,Passeriformes,Passeridae,Passer,domesticus,Passer domesticus,Linnaeus 1758,House sparrow
+10033,STUVUL,15820,45510981,179637,Metazoa,Chordata,Aves,Passeriformes,Sturnidae,Sturnus,vulgaris,Sturnus vulgaris,NA,Starling
+10034,CERBRA,14870,45513692,559138,Metazoa,Chordata,Aves,Passeriformes,Certhiidae,Certhia,brachydactyla,Certhia brachydactyla,NA,Short-toed treecreeper
+10035,TURMER,11870,45510215,179757,Metazoa,Chordata,Aves,Passeriformes,Turdidae,Turdus,merula,Turdus merula,NA,Blackbird
+10036,OENOEN,11460,45511011,179814,Metazoa,Chordata,Aves,Passeriformes,Muscicapidae,Oenanthe,oenanthe,Oenanthe oenanthe,Linnaeus 1758,Northern wheatear
+10037,CHANIV,NA,45509161,824030,Metazoa,Chordata,Aves,Charadriiformes,Charadriidae,Charadrius,nivosus,Charadrius nivosus,Cassin 1858,Snowy plover
+10038,URIAAL,06340,45509343,176974,Metazoa,Chordata,Aves,Charadriiformes,Alcidae,Uria,aalge,Uria aalge,Pontoppidan 1763,Common guillemot
+10039,FULATR,04290,45509131,176290,Metazoa,Chordata,Aves,Gruiformes,Rallidae,Fulica,atra,Fulica atra,NA,Coot
+10040,AEGFUN,07700,45510747,177938,Metazoa,Chordata,Aves,Strigiformes,Strigidae,Aegolius,funereus,Aegolius funereus,Linnaeus 1758,Boreal owl
+10041,DICHOT,15270,45515233,559767,Metazoa,Chordata,Aves,Passeriformes,Dicruridae,Dicrurus,hottentottus,Dicrurus hottentottus,Linnaeus 1766,Hair-crested drongo
+10042,LARHYP,05990,45509297,176808,Metazoa,Chordata,Aves,Charadriiformes,Laridae,Larus,hyperboreus,Larus hyperboreus,NA,Glaucous gull
+10043,PUFMAU,00463,45513552,723254,Metazoa,Chordata,Aves,Procellariiformes,Procellariidae,Puffinus,mauretanicus,Puffinus mauretanicus,NA,Balearic shearwater
+10044,RHYJUB,NA,1045974,176405,Metazoa,Chordata,Aves,Eurypygiformes,Rhynochetidae,Rhynochetos,jubatus,Rhynochetos jubatus,NA,Kagu
+10045,ACRARU,12530,45515418,558408,Metazoa,Chordata,Aves,Passeriformes,Acrocephalidae,Acrocephalus,arundinaceus,Acrocephalus arundinaceus,Linnaeus 1758,Great reed warbler
+10046,SPHDEM,NA,45512089,174462,Metazoa,Chordata,Aves,Sphenisciformes,Spheniscidae,Spheniscus,demersus,Spheniscus demersus,Linnaeus 1758,Black-footed penguin
