@@ -86,3 +86,18 @@ species_codes <- readr::read_csv(system.file("extdata", "species_codes.csv", pac
 
 euring_codes <- readr::read_csv(system.file("extdata", "EURINGSpeciesCodesMay2024.csv", package = "metadata", mustWork = TRUE)) |>
   dplyr::mutate(EURING_Code = stringr::str_pad(EURING_Code, side = "left", pad = "0", width = 5))
+
+#' EUNIS habitat codes
+#'
+#' Habitat classification (version 2012) according to the European Nature Information System (EUNIS). EUNIS habitat classification is hierarchical (up to eight levels).
+#'
+#' @format A data frame
+#' \describe{
+#'      \item{habitatID}{Identifier for the habitat as provided by EUNIS.}
+#'      \item{habitatLevel}{Hierarchical level for the habitat as provided by EUNIS. Options: 1-8}
+#'      \item{habitatType}{Name or short description for the habitat as proved by EUNIS.}
+#'      \item{habitatDetails}{Detailed description or definition for the habitat as provided by EUNIS.}
+#' }
+#' @name habitat_codes
+
+habitat_codes <- readr::read_csv(system.file("extdata", "habitat_codes.csv", package = "metadata", mustWork = TRUE))
