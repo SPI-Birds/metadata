@@ -1005,13 +1005,13 @@ convert_to_eml <- function(email) {
                             packageId = packageId,
                             system = system,
                             lang = lang),
-                 file = paste0("eml/", fileName),
+                 file = paste0("inst/extdata/eml/", fileName),
                  encoding = "UTF-8")
 
   # Validate EML
-  validation <- EML::eml_validate(EML::read_eml(paste0("eml/", fileName)))
+  validation <- EML::eml_validate(EML::read_eml(paste0("inst/extdata/eml/", fileName)))
 
-  if(EML::eml_validate(EML::read_eml(paste0("eml/", fileName))) == TRUE) {
+  if(EML::eml_validate(EML::read_eml(paste0("inst/extdata/eml/", fileName))) == TRUE) {
 
     cat(crayon::cyan("The created EML document is schema-valid.\n"))
 
