@@ -29,26 +29,26 @@ add_metadata <- function(meta) {
   if(meta$studyID %in% study_codes$studyID) {
 
     study_codes <- study_codes %>%
-      dplyr::mutate(custodianID = dplyr::case_when(studyID == meta$studyID ~ newCustodianID,
-                                                   TRUE ~ custodianID),
-                    custodianName = dplyr::case_when(studyID == meta$studyID ~ meta$custodianName,
-                                                     TRUE ~ custodianName),
-                    data = dplyr::case_when(studyID == meta$studyID ~ FALSE,
-                                            TRUE ~ data),
-                    standardFormat = dplyr::case_when(studyID == meta$studyID ~ NA,
-                                                      TRUE ~ standardFormat))
+      dplyr::mutate("custodianID" = dplyr::case_when(.data$studyID == meta$studyID ~ newCustodianID,
+                                                   TRUE ~ .data$custodianID),
+                    "custodianName" = dplyr::case_when(.data$studyID == meta$studyID ~ meta$custodianName,
+                                                     TRUE ~ .data$custodianName),
+                    "data" = dplyr::case_when(.data$studyID == meta$studyID ~ FALSE,
+                                            TRUE ~ .data$data),
+                    "standardFormat" = dplyr::case_when(.data$studyID == meta$studyID ~ NA,
+                                                      TRUE ~ .data$standardFormat))
 
   } else {
 
     study_codes <- study_codes %>%
       tibble::add_row(
-        studyID = meta$studyID,
-        studyUUID = meta$studyUUID,
-        siteID = meta$siteID,
-        custodianID = newCustodianID,
-        custodianName = meta$custodianName,
-        data = FALSE,
-        standardFormat = NA
+        "studyID" = meta$studyID,
+        "studyUUID" = meta$studyUUID,
+        "siteID" = meta$siteID,
+        "custodianID" = newCustodianID,
+        "custodianName" = meta$custodianName,
+        "data" = FALSE,
+        "standardFormat" = NA
       )
 
   }
@@ -57,10 +57,10 @@ add_metadata <- function(meta) {
   if(meta$siteID %in% site_codes$siteID) {
 
     site_codes <- site_codes %>%
-      dplyr::mutate(decimalLatitude = dplyr::case_when(siteID == meta$siteID ~ meta$lat,
-                                                       TRUE ~ decimalLatitude),
-                    decimalLongitude = dplyr::case_when(siteID == meta$siteID ~ meta$lon,
-                                                        TRUE ~ decimalLongitude))
+      dplyr::mutate("decimalLatitude" = dplyr::case_when(.data$siteID == meta$siteID ~ meta$lat,
+                                                       TRUE ~ .data$decimalLatitude),
+                    "decimalLongitude" = dplyr::case_when(.data$siteID == meta$siteID ~ meta$lon,
+                                                        TRUE ~ .data$decimalLongitude))
 
   } else {
 
@@ -68,26 +68,26 @@ add_metadata <- function(meta) {
     if(meta$country %in% ISOcodes::ISO_3166_1$Name) {
 
       countryCode <-ISOcodes::ISO_3166_1 %>%
-        dplyr::filter(Name == meta$country) %>%
+        dplyr::filter(.data$Name == meta$country) %>%
         dplyr::pull("Alpha_2")
 
     } else {
 
       countryCode <- ISOcodes::ISO_3166_1 %>%
-        dplyr::filter(stringr::str_detect(Name, meta$country)) %>%
+        dplyr::filter(stringr::str_detect(.data$Name, meta$country)) %>%
         dplyr::pull("Alpha_2")
 
     }
 
     site_codes <- site_codes %>%
       tibble::add_row(
-        siteID = meta$siteID,
-        siteName = meta$siteName,
-        country = meta$country,
-        countryCode = countryCode,
-        decimalLatitude = meta$lat,
-        decimalLongitude = meta$lon,
-        locationAccordingTo = "metadataProvider"
+        "siteID" = meta$siteID,
+        "siteName" = meta$siteName,
+        "country" = meta$country,
+        "countryCode" = countryCode,
+        "decimalLatitude" = meta$lat,
+        "decimalLongitude" = meta$lon,
+        "locationAccordingTo" = "metadataProvider"
       )
 
   }
@@ -96,9 +96,9 @@ add_metadata <- function(meta) {
   taxa <- purrr::map(.x = meta$taxa,
                      .f = ~{
                        species_name <- .x |>
-                         dplyr::filter(rank == "species") |>
-                         dplyr::distinct(name) |>
-                         dplyr::pull(name)
+                         dplyr::filter(.data$rank == "species") |>
+                         dplyr::distinct(.data$name) |>
+                         dplyr::pull("name")
 
                        if(!(species_name %in% species_codes$scientificName)) {
 
@@ -147,8 +147,8 @@ assign_custodianID <- function(meta) {
 
   if(custodianID %in% study_codes$custodianID) {
 
-    custodian_check <- menu(choices = c("Yes", "Provide a new ID"),
-                            title = "This custodianID already exists. Do you wish to link the existing custodianID to this metadata entry?")
+    custodian_check <- utils::menu(choices = c("Yes", "Provide a new ID"),
+                                   title = "This custodianID already exists. Do you wish to link the existing custodianID to this metadata entry?")
 
     if(custodian_check == 2) {
 
@@ -173,35 +173,37 @@ assign_custodianID <- function(meta) {
 #' @param taxa List of taxa, eq of list output of \link{convert_to_eml}.
 #'
 #' @returns A data frame with a number of rows equal to the number of species to be added, and variables equal to the structure of \link{species_codes}.
+#'
+#' @importFrom tidyr pivot_wider
 
 add_species <- function(taxa) {
 
   # Pivot taxonomic classification from convert_to_eml() to wide format of species_codes
   species_ids <- dplyr::bind_rows(taxa) |>
-    dplyr::filter(rank == "species") |>
-    dplyr::mutate(db = dplyr::case_when(db == "https://www.gbif.org" ~ "speciesGBIFID",
-                                        db == "https://www.catalogueoflife.org" ~ "speciesCOLID",
-                                        db == "https://eol.org" ~ "speciesEOLpageID",
-                                        db == "https://www.itis.gov" ~ "speciesTSN",
-                                        db == "https://euring.org" ~ "speciesEURINGCode")) |>
+    dplyr::filter(.data$rank == "species") |>
+    dplyr::mutate("db" = dplyr::case_when(.data$db == "https://www.gbif.org" ~ "speciesGBIFID",
+                                        .data$db == "https://www.catalogueoflife.org" ~ "speciesCOLID",
+                                        .data$db == "https://eol.org" ~ "speciesEOLpageID",
+                                        .data$db == "https://www.itis.gov" ~ "speciesTSN",
+                                        .data$db == "https://euring.org" ~ "speciesEURINGCode")) |>
     tidyr::pivot_wider(values_from = "id",
                        names_from = "db") |>
-    dplyr::mutate(speciesEOLpageID = as.numeric(speciesEOLpageID),
-                  speciesTSN = as.numeric(speciesTSN),
-                  speciesGBIFID = as.numeric(speciesGBIFID)) |>
+    dplyr::mutate("speciesEOLpageID" = as.numeric(.data$speciesEOLpageID),
+                  "speciesTSN" = as.numeric(.data$speciesTSN),
+                  "speciesGBIFID" = as.numeric(.data$speciesGBIFID)) |>
     dplyr::rename("scientificName" = "name") |>
     dplyr::select(-"rank")
 
   # Add missing info authorship & vernacular name
   species <- species_ids |>
-    dplyr::mutate(scientificNameAuthorship = purrr::map_chr(.x = speciesGBIFID,
+    dplyr::mutate(scientificNameAuthorship = purrr::map_chr(.x = .data$speciesGBIFID,
                                                             .f = ~{
 
                                                               authorship <- taxize::gbif_name_usage(.x)$authorship
                                                               stringr::str_remove_all(authorship, "\\(|\\)|\\)\\s|\\s$")
 
                                                             }),
-                  vernacularName = purrr::map_chr(.x = scientificName,
+                  vernacularName = purrr::map_chr(.x = .data$scientificName,
                                                   .f = ~{
 
                                                     get_vernacular_name(.x)
@@ -212,10 +214,11 @@ add_species <- function(taxa) {
                   # Create internal speciesID
                   # - Format: first three letters of genus + first three letters of specific epithet
                   # - If this combination of letters already exist, ask user to provide one.
-                  speciesID = purrr::map_chr(.x = scientificName,
+                  speciesID = purrr::map_chr(.x = .data$scientificName,
                                              .f = ~{
 
-                                               species_id <- stringr::str_split_1(string = .x, pattern = " ") |>
+                                               species_id <- stringr::str_split_1(string = .x,
+                                                                                  pattern = " ") |>
                                                  stringr::str_sub_all(start = 1, end = 3) |>
                                                  unlist() |>
                                                  paste(collapse = "") |>
@@ -268,9 +271,9 @@ get_vernacular_name <- function(species) {
 
   common_name <- WikidataQueryServiceR::query_wikidata(sparql_query = common_query,
                                                        format = "smart") |>
-    dplyr::mutate(common_name = stringr::str_to_sentence(common_name),
-                  label = stringr::str_to_sentence(label)) |>
-    dplyr::pull(common_name) |>
+    dplyr::mutate("common_name" = stringr::str_to_sentence(.data$common_name),
+                  "label" = stringr::str_to_sentence(.data$label)) |>
+    dplyr::pull("common_name") |>
     unique()
 
   # Get GBIF vernacular name

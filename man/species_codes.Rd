@@ -5,7 +5,7 @@
 \alias{species_codes}
 \title{SPI-Birds species table: species IDs, codes, and taxonomic ranks}
 \format{
-A data frame 46 rows and 10 variables
+A data frame 51 rows and 10 variables
 \describe{
 \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species.}
 \item{speciesID}{SPI-Birds' 6-letter species identifier. First three letters indicate the genus, last three letters indicate the species indicator.}

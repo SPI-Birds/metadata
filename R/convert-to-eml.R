@@ -16,6 +16,11 @@
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom uuid UUIDgenerate
+#' @importFrom stats na.omit
+#' @importFrom utils menu
+#' @importFrom rlang .data
+#' @importFrom stringi stri_remove_empty
+#' @importFrom rcrossref cr_cn
 #' @export
 
 convert_to_eml <- function(email) {
@@ -559,20 +564,20 @@ convert_to_eml <- function(email) {
                                 .f = ~{
 
                                   habitat_codes %>%
-                                    dplyr::filter(habitatID == .x) %>%
-                                    dplyr::mutate(habitatList = purrr::map2(.x = habitatID,
-                                                                            .y = habitatType,
-                                                                            .f = ~{
+                                    dplyr::filter(.data$habitatID == .x) %>%
+                                    dplyr::mutate("habitatList" = purrr::map2(.x = habitatID,
+                                                                              .y = habitatType,
+                                                                              .f = ~{
 
-                                                                              c(.x, .y)
+                                                                                c(.x, .y)
 
-                                                                            })) %>%
+                                                                              })) %>%
                                     dplyr::select("habitatLevel", "habitatList")
 
                                 }) %>%
       purrr::list_rbind() %>%
-      dplyr::arrange(habitatLevel) %>%
-      dplyr::pull(habitatList)
+      dplyr::arrange(.data$habitatLevel) %>%
+      dplyr::pull("habitatList")
 
 
     # Concatenate otherHabitats with selected habitats, and keep unique codes
@@ -841,7 +846,7 @@ convert_to_eml <- function(email) {
 
     activities <- list(description = list(para = list("Other activities",
                                                       paste0("The following activities were undertaken: ",
-                                                             paste(na.omit(c(otherActivities, nonlistedActivities)), sep = ", "), "."))))
+                                                             paste(stats::na.omit(c(otherActivities, nonlistedActivities)), sep = ", "), "."))))
 
   }
 
@@ -892,8 +897,8 @@ convert_to_eml <- function(email) {
   if(study_ids$studyID %in% study_codes$studyID) {
 
     packageId <- study_codes %>%
-      dplyr::filter(studyID == {{study_ids$studyID}}) %>%
-      dplyr::pull(studyUUID)
+      dplyr::filter(.data$studyID == {{study_ids$studyID}}) %>%
+      dplyr::pull("studyUUID")
 
     # Generate new UUID for new metadata entries
   } else {
@@ -950,7 +955,7 @@ convert_to_eml <- function(email) {
 
   if(EML::eml_validate(EML::read_eml(paste0("inst/extdata/eml/", fileName))) == TRUE) {
 
-    cat(crayon::cyan("The created EML document is schema-valid.\n"))
+    cat("The created EML document is schema-valid.\n")
 
   } else {
 
@@ -963,15 +968,15 @@ convert_to_eml <- function(email) {
   }
 
   # Return values for metadata files
-  return(list(studyID = study_ids$studyID,
-              studyUUID = packageId,
-              siteID = study_ids$siteID,
-              siteName = entry$studySiteName,
-              custodianName = entry$creator_organizationName,
-              country = entry$studySiteCountry,
-              lat = mean(c(northBoundingCoordinate, southBoundingCoordinate)),
-              lon = mean(c(westBoundingCoordinate, eastBoundingCoordinate)),
-              taxa = taxon_ids))
+  return(list("studyID" = study_ids$studyID,
+              "studyUUID" = packageId,
+              "siteID" = study_ids$siteID,
+              "siteName" = entry$studySiteName,
+              "custodianName" = entry$creator_organizationName,
+              "country" = entry$studySiteCountry,
+              "lat" = mean(c(northBoundingCoordinate, southBoundingCoordinate)),
+              "lon" = mean(c(westBoundingCoordinate, eastBoundingCoordinate)),
+              "taxa" = taxon_ids))
 
 }
 
@@ -1154,7 +1159,7 @@ set_study_site_ids <- function(entry) {
 
   }
 
-  return(list(siteID = siteID,
-              studyID = studyID))
+  return(list("siteID" = siteID,
+              "studyID" = studyID))
 
 }

@@ -18,7 +18,7 @@ get_taxon_ids <- function(species) {
   # Ensure that provided input is the scientific name of a species
   species_name <- taxize::tax_name(sci = species,
                                    get = "species") |>
-    dplyr::pull(species)
+    dplyr::pull("species")
 
   if(!is.na(species_name)) {
 
@@ -26,8 +26,8 @@ get_taxon_ids <- function(species) {
     # - GBIF Backbone Taxonomy ID
     gbif <- taxize::get_gbifid_(sci = species_name) %>%
       dplyr::bind_rows() %>%
-      dplyr::filter(status == "ACCEPTED" & matchtype == "EXACT") %>%
-      dplyr::pull(usagekey)
+      dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT") %>%
+      dplyr::pull("usagekey")
 
     # - EOL page ID
     eol <- taxize::get_eolid(sci_com = species_name,
@@ -45,12 +45,12 @@ get_taxon_ids <- function(species) {
     if(species_name %in% euring_codes$Current_Name) {
 
       euring <- tibble::tibble(
-        name = species_name,
-        rank = "species",
-        id = euring_codes %>%
-          dplyr::filter(Current_Name == name) %>%
+        "name" = species_name,
+        "rank" = "species",
+        "id" = euring_codes %>%
+          dplyr::filter("Current_Name" == .data$name) %>%
           dplyr::pull("EURING_Code"),
-        db = "https://euring.org"
+        "db" = "https://euring.org"
       )
 
     } else { # Skip for species not in EURING
@@ -62,15 +62,15 @@ get_taxon_ids <- function(species) {
     # Get taxonomic classifications
     # - GBIF
     gbif_class <- rbind(taxize::classification(gbif, db = "gbif")) %>%
-      dplyr::mutate(db = "https://www.gbif.org",
-                    id = as.character(.data$id))
+      dplyr::mutate("db" = "https://www.gbif.org",
+                    "id" = as.character(.data$id))
 
     # - EOL
     eol_class <- tibble::tibble(
-      name = species_name,
-      rank = "species",
-      id = attributes(eol)$pageid,
-      db = "https://eol.org"
+      "name" = species_name,
+      "rank" = "species",
+      "id" = attributes(eol)$pageid,
+      "db" = "https://eol.org"
     )
 
     # - COL
@@ -78,10 +78,10 @@ get_taxon_ids <- function(species) {
 
       col_class <- dplyr::bind_rows(col$usage$classification) %>%
         dplyr::select("name", "rank", "id") %>%
-        dplyr::add_row(name = col$usage$name,
-                       rank = col$usage$rank,
-                       id = col$usage$id) %>%
-        dplyr::mutate(db = "https://www.catalogueoflife.org")
+        dplyr::add_row("name" = col$usage$name,
+                       "rank" = col$usage$rank,
+                       "id" = col$usage$id) %>%
+        dplyr::mutate("db" = "https://www.catalogueoflife.org")
 
     } else { # Skip for species not in COL
 
@@ -91,14 +91,14 @@ get_taxon_ids <- function(species) {
 
     # - ITIS
     itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
-      dplyr::mutate(db = "https://www.itis.gov")
+      dplyr::mutate("db" = "https://www.itis.gov")
 
     # Combine ids, names and classifications
     # Only include the ranks 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', and 'species'
     species_df <- dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
       dplyr::select(-"query") %>%
-      dplyr::filter(rank %in% c("kingdom", "phylum", "class", "order",
-                                "family", "genus", "species"))
+      dplyr::filter(.data$rank %in% c("kingdom", "phylum", "class", "order",
+                                      "family", "genus", "species"))
 
     return(species_df)
 
@@ -127,16 +127,16 @@ create_nested_taxonomy <- function(taxa) {
   if(length(taxa) > 1) {
 
     list(
-      taxonRankName = taxa[[1]][1,]$rank,
-      taxonRankValue = taxa[[1]][1,]$name,
-      taxonId = purrr::map(.x = seq_len(nrow(taxa[[1]])),
-                           .f = ~{
+      "taxonRankName" = taxa[[1]][1,]$rank,
+      "taxonRankValue" = taxa[[1]][1,]$name,
+      "taxonId" = purrr::map(.x = seq_len(nrow(taxa[[1]])),
+                             .f = ~{
 
-                             list(provider = taxa[[1]][.x,]$db,
-                                  taxonId = taxa[[1]][.x,]$id)
+                               list(provider = taxa[[1]][.x,]$db,
+                                    taxonId = taxa[[1]][.x,]$id)
 
-                           }),
-      taxonomicClassification = create_nested_taxonomy(taxa[-1])
+                             }),
+      "taxonomicClassification" = create_nested_taxonomy(taxa[-1])
     )
 
   } else {
@@ -161,16 +161,16 @@ create_nested_taxonomy <- function(taxa) {
       unique()
 
     list(
-      taxonRankName = taxa[[1]][1,]$rank,
-      taxonRankValue = taxa[[1]][1,]$name,
-      commonName = commonName,
-      taxonId = purrr::map(.x = seq_len(nrow(taxa[[1]])),
-                           .f = ~{
+      "taxonRankName" = taxa[[1]][1,]$rank,
+      "taxonRankValue" = taxa[[1]][1,]$name,
+      "commonName" = commonName,
+      "taxonId" = purrr::map(.x = seq_len(nrow(taxa[[1]])),
+                             .f = ~{
 
-                             list(provider = taxa[[1]][.x,]$db,
-                                  taxonId = taxa[[1]][.x,]$id)
+                               list(provider = taxa[[1]][.x,]$db,
+                                    taxonId = taxa[[1]][.x,]$id)
 
-                           })
+                             })
     )
 
   }

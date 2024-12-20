@@ -5,8 +5,8 @@
 \alias{study_codes}
 \title{SPI-Birds study table: studies and data custodians}
 \format{
-A data frame of 139 rows and 9 variables
-\descrbe{
+A data frame of 144 rows and 9 variables
+\describe{
 \item{studyID}{Character indicating the unique ID for a SPI-Birds study.}
 \item{studyUUID}{Character indicating the univerisally unique identifier for the SPI-Birds study, to be referenced in the EML metadata file.}
 \item{studyName}{Character indicating the name of the SPI-Birds study.}

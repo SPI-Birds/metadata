@@ -2,7 +2,7 @@
 #'
 #' Geographic information and SPI-Birds-internal codes for all study sites.
 #'
-#' @format A data frame of 137 rows and 7 variables
+#' @format A data frame of 142 rows and 7 variables
 #' \describe{
 #'    \item{siteID}{Character indicating the unique ID for a SPI-Birds study site.}
 #'    \item{siteName}{Character indicating the name of a SPI-Birds study site.}
@@ -10,7 +10,7 @@
 #'    \item{countryCode}{Standard code for the country, using \href{https://www.iso.org/iso-3166-country-codes.html}{ISO 3166-1 alpha-2}.}
 #'    \item{decimalLatitude}{Geographic latitude of the geographic center of the study site in decimal degrees (WGS84).}
 #'    \item{decimalLongitude}{Geographic longitude of the geographic center of the study site in decimal degrees (WGS84).}
-#'    \item{coordinatesAccordingTo}{Provider of the coordinate information. Either "metadataProvider" or "data".}
+#'    \item{locationAccordingTo}{Provider of the coordinate information. Either "metadataProvider" or "data".}
 #' }
 #'
 #' @name site_codes
@@ -23,8 +23,8 @@ site_codes <- readr::read_csv(system.file("extdata", "site_codes.csv", package =
 #'
 #' SPI-Birds-internal codes for all studies, the related study sites, and the status of the data and pipeline.
 #'
-#' @format A data frame of 139 rows and 9 variables
-#' \descrbe{
+#' @format A data frame of 144 rows and 9 variables
+#' \describe{
 #'    \item{studyID}{Character indicating the unique ID for a SPI-Birds study.}
 #'    \item{studyUUID}{Character indicating the univerisally unique identifier for the SPI-Birds study, to be referenced in the EML metadata file.}
 #'    \item{studyName}{Character indicating the name of the SPI-Birds study.}
@@ -45,7 +45,7 @@ study_codes <- readr::read_csv(system.file("extdata", "study_codes.csv", package
 #'
 #' Species information, including various taxonomic ranks, SPI-Birds-internal and external codes.
 #'
-#' @format A data frame 46 rows and 10 variables
+#' @format A data frame 51 rows and 10 variables
 #' \describe{
 #'    \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species.}
 #'    \item{speciesID}{SPI-Birds' 6-letter species identifier. First three letters indicate the genus, last three letters indicate the species indicator.}
@@ -83,7 +83,7 @@ species_codes <- readr::read_csv(system.file("extdata", "species_codes.csv", pac
 
 euring_codes <- readr::read_csv(system.file("extdata", "EURINGSpeciesCodesMay2024.csv", package = "metadata", mustWork = TRUE),
                                 show_col_types = FALSE) |>
-  dplyr::mutate(EURING_Code = stringr::str_pad(EURING_Code, side = "left", pad = "0", width = 5))
+  dplyr::mutate("EURING_Code" = stringr::str_pad(.data$EURING_Code, side = "left", pad = "0", width = 5))
 
 #' EUNIS habitat codes
 #'

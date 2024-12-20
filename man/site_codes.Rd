@@ -5,7 +5,7 @@
 \alias{site_codes}
 \title{SPI-Birds site table: study site names and locations}
 \format{
-A data frame of 137 rows and 7 variables
+A data frame of 142 rows and 7 variables
 \describe{
 \item{siteID}{Character indicating the unique ID for a SPI-Birds study site.}
 \item{siteName}{Character indicating the name of a SPI-Birds study site.}
@@ -13,7 +13,7 @@ A data frame of 137 rows and 7 variables
 \item{countryCode}{Standard code for the country, using \href{https://www.iso.org/iso-3166-country-codes.html}{ISO 3166-1 alpha-2}.}
 \item{decimalLatitude}{Geographic latitude of the geographic center of the study site in decimal degrees (WGS84).}
 \item{decimalLongitude}{Geographic longitude of the geographic center of the study site in decimal degrees (WGS84).}
-\item{coordinatesAccordingTo}{Provider of the coordinate information. Either "metadataProvider" or "data".}
+\item{locationAccordingTo}{Provider of the coordinate information. Either "metadataProvider" or "data".}
 }
 }
 \usage{
