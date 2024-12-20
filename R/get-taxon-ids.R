@@ -20,85 +20,94 @@ get_taxon_ids <- function(species) {
                                    get = "species") |>
     dplyr::pull(species)
 
-  # Get IDs
-  # - GBIF Backbone Taxonomy ID
-  gbif <- taxize::get_gbifid_(sci = species_name) %>%
-    dplyr::bind_rows() %>%
-    dplyr::filter(status == "ACCEPTED" & matchtype == "EXACT") %>%
-    dplyr::pull(usagekey)
+  if(!is.na(species_name)) {
 
-  # - EOL page ID
-  eol <- taxize::get_eolid(sci_com = species_name,
-                           data_source = "EOL.*2022", rank = "species")
+    # Get IDs
+    # - GBIF Backbone Taxonomy ID
+    gbif <- taxize::get_gbifid_(sci = species_name) %>%
+      dplyr::bind_rows() %>%
+      dplyr::filter(status == "ACCEPTED" & matchtype == "EXACT") %>%
+      dplyr::pull(usagekey)
 
-  # - COL ID
-  col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                          stringr::str_replace(species_name, " ", "+"))) |>
-    httr::content()
+    # - EOL page ID
+    eol <- taxize::get_eolid(sci_com = species_name,
+                             data_source = "EOL.*2022", rank = "species")
 
-  # - ITIS TSN
-  tsn <- taxize::get_tsn(sci = species_name)
+    # - COL ID
+    col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
+                            stringr::str_replace(species_name, " ", "+"))) |>
+      httr::content()
 
-  # - EURING code
-  if(species_name %in% euring_codes$Current_Name) {
+    # - ITIS TSN
+    tsn <- taxize::get_tsn(sci = species_name)
 
-    euring <- tibble::tibble(
+    # - EURING code
+    if(species_name %in% euring_codes$Current_Name) {
+
+      euring <- tibble::tibble(
+        name = species_name,
+        rank = "species",
+        id = euring_codes %>%
+          dplyr::filter(Current_Name == name) %>%
+          dplyr::pull("EURING_Code"),
+        db = "https://euring.org"
+      )
+
+    } else { # Skip for species not in EURING
+
+      euring <- NULL
+
+    }
+
+    # Get taxonomic classifications
+    # - GBIF
+    gbif_class <- rbind(taxize::classification(gbif, db = "gbif")) %>%
+      dplyr::mutate(db = "https://www.gbif.org",
+                    id = as.character(.data$id))
+
+    # - EOL
+    eol_class <- tibble::tibble(
       name = species_name,
       rank = "species",
-      id = euring_codes %>%
-        dplyr::filter(Current_Name == name) %>%
-        dplyr::pull("EURING_Code"),
-      db = "https://euring.org"
+      id = attributes(eol)$pageid,
+      db = "https://eol.org"
     )
 
-  } else { # Skip for species not in EURING
+    # - COL
+    if("usage" %in% names(col)) {
 
-    euring <- NULL
+      col_class <- dplyr::bind_rows(col$usage$classification) %>%
+        dplyr::select("name", "rank", "id") %>%
+        dplyr::add_row(name = col$usage$name,
+                       rank = col$usage$rank,
+                       id = col$usage$id) %>%
+        dplyr::mutate(db = "https://www.catalogueoflife.org")
+
+    } else { # Skip for species not in COL
+
+      col_class <- NULL
+
+    }
+
+    # - ITIS
+    itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
+      dplyr::mutate(db = "https://www.itis.gov")
+
+    # Combine ids, names and classifications
+    # Only include the ranks 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', and 'species'
+    species_df <- dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
+      dplyr::select(-"query") %>%
+      dplyr::filter(rank %in% c("kingdom", "phylum", "class", "order",
+                                "family", "genus", "species"))
+
+    return(species_df)
+
+    # If species name cannot be found, return NULL
+  } else {
+
+    return(NULL)
 
   }
-
-  # Get taxonomic classifications
-  # - GBIF
-  gbif_class <- rbind(taxize::classification(gbif, db = "gbif")) %>%
-    dplyr::mutate(db = "https://www.gbif.org",
-                  id = as.character(.data$id))
-
-  # - EOL
-  eol_class <- tibble::tibble(
-    name = species_name,
-    rank = "species",
-    id = attributes(eol)$pageid,
-    db = "https://eol.org"
-  )
-
-  # - COL
-  if("usage" %in% names(col)) {
-
-    col_class <- dplyr::bind_rows(col$usage$classification) %>%
-      dplyr::select("name", "rank", "id") %>%
-      dplyr::add_row(name = col$usage$name,
-                     rank = col$usage$rank,
-                     id = col$usage$id) %>%
-      dplyr::mutate(db = "https://www.catalogueoflife.org")
-
-  } else { # Skip for species not in COL
-
-    col_class <- NULL
-
-  }
-
-  # - ITIS
-  itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
-    dplyr::mutate(db = "https://www.itis.gov")
-
-  # Combine ids, names and classifications
-  # Only include the ranks 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', and 'species'
-  species_df <- dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
-    dplyr::select(-"query") %>%
-    dplyr::filter(rank %in% c("kingdom", "phylum", "class", "order",
-                              "family", "genus", "species"))
-
-  return(species_df)
 
 }
 

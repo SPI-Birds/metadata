@@ -33,9 +33,9 @@ add_metadata <- function(meta) {
                                                    TRUE ~ custodianID),
                     custodianName = dplyr::case_when(studyID == meta$studyID ~ meta$custodianName,
                                                      TRUE ~ custodianName),
-                    data = dplyr::case_when(studyID == meta$studyID ~ primaryData,
+                    data = dplyr::case_when(studyID == meta$studyID ~ FALSE,
                                             TRUE ~ data),
-                    standardFormat = dplyr::case_when(studyID == meta$studyID ~ formattedData,
+                    standardFormat = dplyr::case_when(studyID == meta$studyID ~ FALSE,
                                                       TRUE ~ standardFormat))
 
   } else {
@@ -47,8 +47,8 @@ add_metadata <- function(meta) {
         siteID = meta$siteID,
         custodianID = newCustodianID,
         custodianName = meta$custodianName,
-        data = primaryData,
-        standardFormat = formattedData
+        data = FALSE,
+        standardFormat = FALSE
       )
 
   }
@@ -93,7 +93,7 @@ add_metadata <- function(meta) {
   }
 
   # Add new species metadata to species codes table
-  taxa <- purrr::map(.x = taxx,
+  taxa <- purrr::map(.x = meta$taxa,
                      .f = ~{
                        species_name <- .x |>
                          dplyr::filter(rank == "species") |>
@@ -117,7 +117,7 @@ add_metadata <- function(meta) {
 
   if(length(taxa) != 0) {
 
-    species_codes <- dplyr::add_species(taxa)
+    species_codes <- add_species(taxa)
 
   }
 
@@ -148,7 +148,7 @@ assign_custodianID <- function(meta) {
   if(custodianID %in% study_codes$custodianID) {
 
     custodian_check <- menu(choices = c("Yes", "Provide a new ID"),
-                            title = "This custodianID already exists. Do you wish to add this custodianID to this metadata entry?")
+                            title = "This custodianID already exists. Do you wish to link the existing custodianID to this metadata entry?")
 
     if(custodian_check == 2) {
 
@@ -174,9 +174,9 @@ assign_custodianID <- function(meta) {
 #'
 #' @returns A data frame with a number of rows equal to the number of species to be added, and variables equal to the structure of \link{species_codes}.
 
-add_species <- function(meta) {
+add_species <- function(taxa) {
 
-  # Pivot taxononic classification from convert_to_eml() to wide format of species_codes
+  # Pivot taxonomic classification from convert_to_eml() to wide format of species_codes
   species_ids <- dplyr::bind_rows(taxa) |>
     dplyr::filter(rank == "species") |>
     dplyr::mutate(db = dplyr::case_when(db == "https://www.gbif.org" ~ "speciesGBIFID",
@@ -187,7 +187,8 @@ add_species <- function(meta) {
     tidyr::pivot_wider(values_from = "id",
                        names_from = "db") |>
     dplyr::mutate(speciesEOLpageID = as.numeric(speciesEOLpageID),
-                  speciesTSN = as.numeric(speciesTSN)) |>
+                  speciesTSN = as.numeric(speciesTSN),
+                  speciesGBIFID = as.numeric(speciesGBIFID)) |>
     dplyr::rename("scientificName" = "name") |>
     dplyr::select(-"rank")
 
@@ -241,16 +242,14 @@ add_species <- function(meta) {
 
 #' Get English vernacular name of a species
 #'
-#' Get English vernacular name of a species from Wikidata and GBIF Backbone Taxonomy. If multiple vernacular names are used, the user is prompted to select one. If neither Wikidata nor GBIF provides a common name, user is prompted to select EOL common name.
+#' Get English vernacular name of a species from Wikidata and GBIF Backbone Taxonomy. If multiple vernacular names are used, the user is prompted to select one. If neither Wikidata nor GBIF provides a common name, the function searches the EOL page. If none of those exist, this function prompts the user to fill in a name (e.g., based on Wikipedia).
 #'
 #' Only used within \link{add_species}, and with that, \link{add_metadata}.
 #'
 #' @param species The scientific name of the species. Format: '<genus> <specific epithet>'. For example, 'Parus major'.
+#' @import rvest
 
 get_vernacular_name <- function(species) {
-
-  # Get GBIF vernacular name
-  gbif_vern <- stringr::str_to_sentence(taxize::gbif_name_usage(name = species)$vernacularName)
 
   # Query common name from Wikidata
   common_query <- paste0('
@@ -274,13 +273,37 @@ get_vernacular_name <- function(species) {
     dplyr::pull(common_name) |>
     unique()
 
-  # If there are multiple vernacular names...
-  if(length(common_name) > 1) {
+  # Get GBIF vernacular name
+  gbif_vern <- stringr::str_to_sentence(taxize::gbif_name_usage(name = species)$vernacularName)
+
+  # Get EOL vernacular name
+  eol <- taxize::get_eolid(sci_com = species,
+                           data_source = "EOL.*2022", rank = "species")
+
+  eol_vern <- rvest::read_html(paste0("https://eol.org/pages/", attr(eol, "pageid"))) |>
+    rvest::html_element("title") |>
+    rvest::html_text() |>
+    stringr::str_extract("(?<=\\n).*(?=\\n)") |>
+    stringr::str_to_sentence()
+
+
+  # Use Wikidata
+  if(length(common_name) == 1) {
+
+    output <- common_name
+
+    # If there are multiple vernacular names in Wikidata, match with GBIF or EOL
+  } else if(length(common_name) > 1) {
 
     # Select name that matches the vernacular name used in GBIF
     if(any(common_name %in% gbif_vern)) {
 
       output <- gbif_vern
+
+      # Select name that matches the vernacular name used in EOL
+    } else if(any(common_name %in% eol_vern)) {
+
+      output <- eol_vern
 
       # Else, prompt user to select one
     } else {
@@ -292,19 +315,14 @@ get_vernacular_name <- function(species) {
 
     }
 
-    # If Wikidata has no common name, use GBIF
+    # If no Wikidata common name, ask user to pick GBIF or EOL
   } else if(length(common_name) == 0) {
 
-    output <- gbif_vern
+    selected <- utils::menu(choices = c(paste(gbif_vern, "(GBIF)"),
+                                        paste(eol_vern, "(EOL)")),
+                            title = "Which vernacular name to use")
 
-    # If GBIF has no common name, prompt user
-  } else if(length(gbif_vern) == 0) {
-
-    output <- readline("Enter preferred name according to EOL: ")
-
-  } else {
-
-    output <- common_name
+    output <- common_name[selected]
 
   }
 

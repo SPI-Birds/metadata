@@ -20,6 +20,12 @@
 
 convert_to_eml <- function(email) {
 
+  if(missing(email)) {
+
+    stop("Please provide an email address with which you have access to the SPI-Birds metadata sheet.")
+
+  }
+
   # Load metadata from Google Drive
   metadata <- read_metadata(email = email)
 
@@ -371,7 +377,8 @@ convert_to_eml <- function(email) {
 
                             get_taxon_ids(.x)
 
-                          })
+                          }) |>
+    purrr::keep(~!is.null(.x))
 
   # Create nested taxonomy per species
   nested_taxa <- purrr::map(.x = purrr::map(.x = taxon_ids,
@@ -911,6 +918,14 @@ convert_to_eml <- function(email) {
   # Construct <eml>
   fileName <- paste0(paste(packageId, pubDate, sep = "_"), ".xml")
 
+  # Create eml directory if it does not exist
+  if(!dir.exists(here::here("inst", "extdata", "eml"))) {
+
+    dir.create(here::here("inst", "extdata", "eml"))
+
+  }
+
+  # Write EML
   EML::write_eml(eml = list(dataset = list(title = title,
                                            alternateIdentifier = list(alternateIdentifier, shortName),
                                            creator = creator,
@@ -939,7 +954,8 @@ convert_to_eml <- function(email) {
 
   } else {
 
-    stop("The created EML document is not schema-valid. Make fixes to the function.",
+    stop("The created EML document is not schema-valid.\n",
+         "Create an issue on GitHub or make fixes to the function.",
          "\n",
          paste("Validation error found in:", attr(validation, "errors"), "\n"),
          call. = FALSE)
@@ -947,9 +963,9 @@ convert_to_eml <- function(email) {
   }
 
   # Return values for metadata files
-  return(list(studyID = studyID,
+  return(list(studyID = study_ids$studyID,
               studyUUID = packageId,
-              siteID = siteID,
+              siteID = study_ids$siteID,
               siteName = entry$studySiteName,
               custodianName = entry$creator_organizationName,
               country = entry$studySiteCountry,
