@@ -10,7 +10,7 @@ get_vernacular_name(species)
 \item{species}{The scientific name of the species. Format: '\if{html}{\out{<genus>}} \if{html}{\out{<specific epithet>}}'. For example, 'Parus major'.}
 }
 \description{
-Get English vernacular name of a species from Wikidata and GBIF Backbone Taxonomy. If multiple vernacular names are used, the user is prompted to select one. If neither Wikidata nor GBIF provides a common name, user is prompted to select EOL common name.
+Get English vernacular name of a species from Wikidata and GBIF Backbone Taxonomy. If multiple vernacular names are used, the user is prompted to select one. If neither Wikidata nor GBIF provides a common name, the function searches the EOL page. If none of those exist, this function prompts the user to fill in a name (e.g., based on Wikipedia).
 }
 \details{
 Only used within \link{add_species}, and with that, \link{add_metadata}.

@@ -12,8 +12,23 @@ RoxygenNote: 7.3.2
 Depends:
   R (>= 3.6.0)
 Imports:
-  dplyr (>= 1.1.4),
-  EML (>= 2.0.6.1),
-  purrr (>= 1.0.2),
-  stringr (>= 1.5.1), 
-  taxize (>= 0.9.100)
+    dplyr (>= 1.1.4),
+    EML (>= 2.0.6.1),
+    forcats (>= 1.0.0),
+    googlesheets4 (>= 1.1.1),
+    here (>= 1.0.1),
+    httr (>= 1.4.7),
+    ISOcodes (>= 2024.02.12),
+    janitor (>= 2.2.0),
+    jsonlite (>= 1.8.8),
+    lubridate (>= 1.9.3),
+    magrittr (>= 2.0.3),
+    purrr (>= 1.0.2),
+    readr (>= 2.1.5),
+    rvest (>= 1.0.4),
+    stringr (>= 1.5.1),
+    taxize (>= 0.9.100),
+    tibble (>= 3.2.1),
+    tidyselect (>= 1.2.1),
+    uuid (>= 1.2.0),
+    WikidataQueryServiceR (>= 1.0.0)

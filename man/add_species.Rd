@@ -4,7 +4,7 @@
 \alias{add_species}
 \title{Create new species entry to SPI-Birds}
 \usage{
-add_species(meta)
+add_species(taxa)
 }
 \arguments{
 \item{taxa}{List of taxa, eq of list output of \link{convert_to_eml}.}
