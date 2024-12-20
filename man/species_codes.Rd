@@ -5,24 +5,18 @@
 \alias{species_codes}
 \title{SPI-Birds species table: species IDs, codes, and taxonomic ranks}
 \format{
-A data frame
+A data frame 46 rows and 10 variables
 \describe{
 \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species.}
 \item{speciesID}{SPI-Birds' 6-letter species identifier. First three letters indicate the genus, last three letters indicate the species indicator.}
 \item{speciesEURINGCode}{Species code used by \href{https://euring.org/}{EURING}. NA for species not included in EURING.}
-\item{speciesCOLID}{Species ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
 \item{speciesEOLpageID}{Species page ID used by the \href{https://eol.org/}{Encyclopedia of Life}.}
+\item{speciesCOLID}{Species ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
+\item{speciesGBIFID}{Species ID used by the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}.}
 \item{speciesTSN}{Species taxonomic serial number (TSN) used by the \href{https://itis.gov}{Integrated Taxonomic Information System}.}
-\item{kingdom}{Scientific name of the kingdom in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{phylum}{Scientific name of the phylum in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{class}{Scientific name of the class in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{order}{Scientific name of the order in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{family}{Scientific name of the family in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{genus}{Scientific name of the genus in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{specificEpithet}{Scientific name of the species epithet according to the \href{https://eol.org/}{Encyclopedia of Life}.}
 \item{scientificName}{Scientific name (genus + specific epithet) of the species according to the \href{https://eol.org/}{Encyclopedia of Life}.}
 \item{scientificNameAuthorship}{Authorship information of the scientific name, including date information if known. according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-\item{vernacularName}{English common name of species according to \href{https://https://www.wikidata.org/}{Wikidata}.}
+\item{vernacularName}{English common name of species according to \href{https://https://www.wikidata.org/}{Wikidata} and/or GBIF.}
 }
 }
 \usage{

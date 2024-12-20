@@ -15,7 +15,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom purrr map
 #' @importFrom tibble tibble
-#' @importFRom uuid UUIDgenerate
+#' @importFrom uuid UUIDgenerate
 #' @export
 
 convert_to_eml <- function(email) {

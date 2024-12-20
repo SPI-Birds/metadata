@@ -13,5 +13,5 @@ read_metadata(email)
 SPI-Birds metadata submissions are collected through Jotform and stored on Google Sheets.
 }
 \details{
-Only used within \code{convert_to_eml()}.
+Only used within \link{convert_to_eml}.
 }

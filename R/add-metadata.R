@@ -4,7 +4,7 @@
 #'
 #' @param meta List output of \link{convert_to_eml}.
 #'
-#' @importFrom ISOcodes ISO_3166_1
+#' @import ISOcodes
 #' @importFrom tibble add_row
 #' @importFrom readr write_csv
 #' @importFrom here here

@@ -7,7 +7,7 @@
 set_study_site_ids(entry)
 }
 \arguments{
-\item{taxa}{a single-row data frame representing a single metadata entry}
+\item{entry}{a single-row data frame representing a single metadata entry}
 }
 \description{
 This function asks the user for a three-letter siteID, and creates an associated studyID.
@@ -15,5 +15,5 @@ If the metadata entry involves a new study at an existing site, a new studyID is
 If the metadata entry involves an update of an existing study, the user is asked to provide the associated studyID.
 }
 \details{
-Only used within \code{convert_to_eml()}.
+Only used within \link{convert_to_eml}.
 }
