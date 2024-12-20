@@ -15,7 +15,8 @@
 #'
 #' @name site_codes
 
-site_codes <- readr::read_csv(system.file("extdata", "site_codes.csv", package = "metadata", mustWork = TRUE))
+site_codes <- readr::read_csv(system.file("extdata", "site_codes.csv", package = "metadata", mustWork = TRUE),
+                              show_col_types = FALSE)
 
 
 #' SPI-Birds study table: studies and data custodians
@@ -37,35 +38,31 @@ site_codes <- readr::read_csv(system.file("extdata", "site_codes.csv", package =
 #'
 #' @name study_codes
 
-study_codes <- readr::read_csv(system.file("extdata", "study_codes.csv", package = "metadata", mustWork = TRUE))
+study_codes <- readr::read_csv(system.file("extdata", "study_codes.csv", package = "metadata", mustWork = TRUE),
+                               show_col_types = FALSE)
 
 #' SPI-Birds species table: species IDs, codes, and taxonomic ranks
 #'
 #' Species information, including various taxonomic ranks, SPI-Birds-internal and external codes.
 #'
-#' @format A data frame
+#' @format A data frame 46 rows and 10 variables
 #' \describe{
 #'    \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species.}
 #'    \item{speciesID}{SPI-Birds' 6-letter species identifier. First three letters indicate the genus, last three letters indicate the species indicator.}
 #'    \item{speciesEURINGCode}{Species code used by \href{https://euring.org/}{EURING}. NA for species not included in EURING.}
-#'    \item{speciesCOLID}{Species ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
 #'    \item{speciesEOLpageID}{Species page ID used by the \href{https://eol.org/}{Encyclopedia of Life}.}
+#'    \item{speciesCOLID}{Species ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
+#'    \item{speciesGBIFID}{Species ID used by the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}.}
 #'    \item{speciesTSN}{Species taxonomic serial number (TSN) used by the \href{https://itis.gov}{Integrated Taxonomic Information System}.}
-#'    \item{kingdom}{Scientific name of the kingdom in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{phylum}{Scientific name of the phylum in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{class}{Scientific name of the class in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{order}{Scientific name of the order in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{family}{Scientific name of the family in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{genus}{Scientific name of the genus in which the species is identified according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{specificEpithet}{Scientific name of the species epithet according to the \href{https://eol.org/}{Encyclopedia of Life}.}
 #'    \item{scientificName}{Scientific name (genus + specific epithet) of the species according to the \href{https://eol.org/}{Encyclopedia of Life}.}
 #'    \item{scientificNameAuthorship}{Authorship information of the scientific name, including date information if known. according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{vernacularName}{English common name of species according to \href{https://https://www.wikidata.org/}{Wikidata}.}
+#'    \item{vernacularName}{English common name of species according to \href{https://https://www.wikidata.org/}{Wikidata} and/or GBIF.}
 #' }
 #'
 #' @name species_codes
 
-species_codes <- readr::read_csv(system.file("extdata", "species_codes.csv", package = "metadata", mustWork = TRUE))
+species_codes <- readr::read_csv(system.file("extdata", "species_codes.csv", package = "metadata", mustWork = TRUE),
+                                 show_col_types = FALSE)
 
 #' EURING bird species codes
 #'
@@ -84,7 +81,8 @@ species_codes <- readr::read_csv(system.file("extdata", "species_codes.csv", pac
 #'
 #' @name euring_codes
 
-euring_codes <- readr::read_csv(system.file("extdata", "EURINGSpeciesCodesMay2024.csv", package = "metadata", mustWork = TRUE)) |>
+euring_codes <- readr::read_csv(system.file("extdata", "EURINGSpeciesCodesMay2024.csv", package = "metadata", mustWork = TRUE),
+                                show_col_types = FALSE) |>
   dplyr::mutate(EURING_Code = stringr::str_pad(EURING_Code, side = "left", pad = "0", width = 5))
 
 #' EUNIS habitat codes
@@ -100,4 +98,5 @@ euring_codes <- readr::read_csv(system.file("extdata", "EURINGSpeciesCodesMay202
 #' }
 #' @name habitat_codes
 
-habitat_codes <- readr::read_csv(system.file("extdata", "habitat_codes.csv", package = "metadata", mustWork = TRUE))
+habitat_codes <- readr::read_csv(system.file("extdata", "habitat_codes.csv", package = "metadata", mustWork = TRUE),
+                                 show_col_types = FALSE)
