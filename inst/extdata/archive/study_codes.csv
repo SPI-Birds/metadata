@@ -64,8 +64,8 @@ LAN-1,bcb3de8e-96aa-48d8-8a85-1fc6639b0aba,NA,LAN,LAN,Lancaster University,NA,TR
 LAS-1,915d2842-afa8-4765-a17c-89c28ca3d3e2,NA,LAS,OSPAS,"Ornithological Station, Museum and Institute of Zoology, Polish Academy of Sciences",NA,FALSE,NA
 LUN-1,150d9143-56f8-43e3-95fd-94e5e27fcd2f,NA,LUN,SHF,University of Sheffield,NA,FALSE,NA
 MAL-1,ec9c9254-0b7d-4b57-8036-dfc1802d576f,NA,MAL,LND,Lund University,NA,TRUE,FALSE
-Mar-01,7bfb3b64-7d60-47e1-bdba-fa298a4992bb,NA,MAR,UPV,Universitat Politecnica de Valencia,NA,TRUE,FALSE
-May-01,911af888-7f21-43b8-a85d-7b74a3f785eb,NA,MAY,KRC,"Karelian Research Centre, Russian Academy of Sciences",NA,TRUE,FALSE
+MAR-1,7bfb3b64-7d60-47e1-bdba-fa298a4992bb,NA,MAR,UPV,Universitat Politecnica de Valencia,NA,TRUE,FALSE
+MAY-1,911af888-7f21-43b8-a85d-7b74a3f785eb,NA,MAY,KRC,"Karelian Research Centre, Russian Academy of Sciences",NA,TRUE,FALSE
 MET-1,a5fadb80-0809-4448-acc6-0109dccb604c,NA,MET,METU,Middle East Technical University,NA,TRUE,FALSE
 MIE-1,0b5eb585-eac0-4feb-ad0d-ff0e30714ca0,NA,MIE,OSPAS,"Ornithological Station, Museum and Institute of Zoology, Polish Academy of Sciences",NA,FALSE,NA
 MOU-1,86545677-c13c-4df2-977d-6a1d7ea89f8d,NA,MOU,SETE,SETE CNRS,NA,TRUE,FALSE
@@ -138,4 +138,8 @@ PGF-1,22d9e38b-23e1-4415-99d5-e73975d8aa15,NA,PGF,MIZPAS,"Museum and Institute o
 PRB-1,1e733cf7-9b4f-44a6-9ade-baa229b28eea,NA,PRB,MIZPAS,"Museum and Institute of Zoology, Polish Academy of Sciences",NA,FALSE,NA
 KVI-1,17103e17-c088-4ad7-99ee-7e2f4be43889,NA,KVI,BLU,"Department of Biology, Lund University",NA,FALSE,NA
 STP-1,bb359edb-5138-46e0-87be-13cfa8710fd9,NA,STP,TRN,University of Turin,NA,FALSE,NA
-MUP-1,f9887a46-ef01-4ad1-8008-c6069fccbb63,NA,MUP,OLD,University of Oldenburg,NA,FALSE,FALSE
+NEW-1,6837adc9-dbd0-4695-8460-2a8bb64a5dac,NA,NEW,ISPA,Ispa - Instituto Universitário,NA,FALSE,NA
+MDM-1,eb9256bb-b82a-4c91-8769-23a5678c926a,NA,MDM,EKZNW,Ezemvelo KZN WIldlife,NA,FALSE,NA
+LIN-1,e70c5e35-3cb5-4e32-b049-38dff132786b,NA,LIN,ORI,Ornis italica,NA,FALSE,NA
+KAU-1,6c86d3a6-a72d-456a-912e-b4a0e7a73920,NA,KAU,TUR,"Department of Biology, University of Turku",NA,FALSE,NA
+MYQ-1,e55b4742-ed5e-41a9-bc27-375de8501c07,NA,MYQ,ZICAS,"Zoology Institute, Chinese Academy of Science",NA,FALSE,NA

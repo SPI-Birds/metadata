@@ -50,3 +50,11 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10049,CALDIO,00363,45511300,PYXH,2481521,203446,Calonectris diomedea,"Scopoli, 1769",Scopoli's shearwater
 10050,FALTIN,03040,45510788,3DTGW,9616058,175620,Falco tinnunculus,"Linnaeus, 1758","Kestrel, common kestrel"
 10051,GLAPAS,07510,45518939,3G64C,5232162,555445,Glaucidium passerinum,"Linnaeus, 1758",Eurasian pygmy owl
+10052,EMBAUR,18760,45511174,39FSL,2491518,554225,Emberiza aureola,"Pallas, 1773",Yellow-breasted bunting
+10053,EMBSCH,18770,45511177,39FTN,2491557,179543,Emberiza schoeniclus,"Linnaeus, 1758",Common reed bunting
+10054,EMBYES,18790,45518908,39FTZ,2491531,559896,Emberiza yessoensis,"Swinhoe, 1874",Japanese reed bunting
+10055,EMBFUC,18690,45518902,39FT4,2491548,559881,Emberiza fucata,"Pallas, 1776",Chestnut-eared bunting
+10056,EMBSPO,18530,45518907,39FTR,2491522,559890,Emberiza spodocephala,"Pallas, 1776",Black-faced bunting
+10057,HIRRUS,09920,45511466,3M4S7,9515886,178448,Hirundo rustica,"Linnaeus, 1758",Barn swallow
+10058,FALAMU,03080,45514163,3DTFM,2480998,560066,Falco amurensis,"Radde, 1863",Amur falcon
+10059,PICPIC,15490,45515236,4HPXM,5229490,179720,Pica pica,"Linnaeus, 1758",Eurasian magpie

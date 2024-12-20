@@ -48,7 +48,7 @@ get_taxon_ids <- function(species) {
         "name" = species_name,
         "rank" = "species",
         "id" = euring_codes %>%
-          dplyr::filter("Current_Name" == .data$name) %>%
+          dplyr::filter(Current_Name == name) %>%
           dplyr::pull("EURING_Code"),
         "db" = "https://euring.org"
       )
