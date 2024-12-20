@@ -35,7 +35,7 @@ add_metadata <- function(meta) {
                                                      TRUE ~ custodianName),
                     data = dplyr::case_when(studyID == meta$studyID ~ FALSE,
                                             TRUE ~ data),
-                    standardFormat = dplyr::case_when(studyID == meta$studyID ~ FALSE,
+                    standardFormat = dplyr::case_when(studyID == meta$studyID ~ NA,
                                                       TRUE ~ standardFormat))
 
   } else {
@@ -48,7 +48,7 @@ add_metadata <- function(meta) {
         custodianID = newCustodianID,
         custodianName = meta$custodianName,
         data = FALSE,
-        standardFormat = FALSE
+        standardFormat = NA
       )
 
   }
