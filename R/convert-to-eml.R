@@ -6,13 +6,14 @@
 #'
 #' @param email Character indicating the email address with which you have access to the SPI-Birds metadata sheet
 #'
+#' @returns an EML.xml from the submitted metadata, and a list with metadata fields (i.e., studyID, siteID, siteName, custodianName, country, geographic coordinates,and taxonomic coverage) that are stored in the metadata tables (`R/datasets.R`)
+#'
+#' @import dplyr
 #' @importFrom lubridate year
 #' @importFrom tidyselect where
 #' @importFrom forcats fct_relevel
 #' @importFrom magrittr %>%
 #' @importFrom purrr map
-#' @importFrom httr GET
-#' @importFrom jsonlite fromJSON
 #' @importFrom tibble tibble
 #' @importFRom uuid UUIDgenerate
 #' @export
@@ -368,86 +369,7 @@ convert_to_eml <- function(email) {
   taxon_ids <- purrr::map(.x = species,
                           .f = ~{
 
-                            # Ensure that input is a scientific name
-                            species_name <- taxize::tax_name(sci = .x,
-                                                             get = "species") |>
-                              dplyr::pull(species)
-
-                            # Get GBIF ID
-                            gbif <- taxize::get_gbifid_(sci = species_name) %>%
-                              dplyr::bind_rows() %>%
-                              dplyr::filter(status == "ACCEPTED" & matchtype == "EXACT") %>%
-                              dplyr::pull(usagekey)
-
-                            # Get EOL page ID
-                            eol <- taxize::get_eolid(sci_com = species_name,
-                                                     data_source = "EOL.*2022", rank = "species")
-
-                            # Get COL ID
-                            res <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                                                    stringr::str_replace(species_name, " ", "+")))
-
-                            col <- jsonlite::fromJSON(rawToChar(res$content))
-
-                            # Get ITIS
-                            tsn <- taxize::get_tsn(sci = species_name)
-
-                            # Get EURING code
-                            if(.x %in% euring_codes$Current_Name) {
-
-                              euring <- tibble::tibble(
-                                name = species_name,
-                                rank = "species",
-                                id = euring_codes %>%
-                                  dplyr::filter(Current_Name == name) %>%
-                                  dplyr::pull("EURING_Code"),
-                                db = "https://euring.org"
-                              )
-
-                            } else { # Skip for species not in EURING
-
-                              euring <- NULL
-
-                            }
-
-                            # Get GBIF classification
-                            gbif_class <- rbind(taxize::classification(gbif, db = "gbif")) %>%
-                              dplyr::mutate(db = "https://www.gbif.org",
-                                            id = as.character(.data$id))
-
-                            # Get EOL classification
-                            eol_class <- tibble::tibble(
-                              name = species_name,
-                              rank = "species",
-                              id = attributes(eol)$pageid,
-                              db = "https://eol.org"
-                            )
-
-                            # Get COL classification
-                            if("usage" %in% names(col)) {
-
-                              col_class <- col$usage$classification %>%
-                                dplyr::select("name", "rank", "id") %>%
-                                dplyr::add_row(name = col$usage$name,
-                                               rank = col$usage$rank,
-                                               id = col$usage$id) %>%
-                                dplyr::mutate(db = "https://www.catalogueoflife.org")
-
-                            } else { # Skip for species not in COL
-
-                              col_class <- NULL
-
-                            }
-
-                            # Get ITIS classification
-                            itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
-                              dplyr::mutate(db = "https://www.itis.gov")
-
-                            # Combine and filter for rank 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', and 'species'
-                            dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
-                              dplyr::select(-"query") %>%
-                              dplyr::filter(rank %in% c("kingdom", "phylum", "class", "order",
-                                                        "family", "genus", "species"))
+                            get_taxon_ids(.x)
 
                           })
 
@@ -1024,13 +946,24 @@ convert_to_eml <- function(email) {
 
   }
 
+  # Return values for metadata files
+  return(list(studyID = studyID,
+              studyUUID = packageId,
+              siteID = siteID,
+              siteName = entry$studySiteName,
+              custodianName = entry$creator_organizationName,
+              country = entry$studySiteCountry,
+              lat = mean(c(northBoundingCoordinate, southBoundingCoordinate)),
+              lon = mean(c(westBoundingCoordinate, eastBoundingCoordinate)),
+              taxa = taxon_ids))
+
 }
 
 #' Connect to Google Drive and read SPI-Birds metadata sheet
 #'
 #' SPI-Birds metadata submissions are collected through Jotform and stored on Google Sheets.
 #'
-#' Only used within `convert_to_eml()`.
+#' Only used within \link{convert_to_eml}.
 #'
 #' @param email Character indicating the email address with which you have access to the SPI-Birds metadata sheet
 #'
@@ -1133,7 +1066,7 @@ read_metadata <- function(email) {
 #' If the metadata entry involves a new study at an existing site, a new studyID is automatically assigned.
 #' If the metadata entry involves an update of an existing study, the user is asked to provide the associated studyID.
 #'
-#' Only used within `convert_to_eml()`.
+#' Only used within \link{convert_to_eml}.
 #'
 #' @param entry a single-row data frame representing a single metadata entry
 #' @importFrom stringr str_detect
@@ -1207,71 +1140,5 @@ set_study_site_ids <- function(entry) {
 
   return(list(siteID = siteID,
               studyID = studyID))
-
-}
-
-
-#' Create EML's hierarchical taxonomy and refer to relevant taxon ids where available
-#'
-#' Per studied species, this function will create a nested taxonomy including kingdom, phylum, class, order, family, genus, species
-#'
-#' Only used within `convert_to_eml()`.
-#'
-#' @param taxa list of taxonomic names, ranks and ids per species
-#' @importFrom stringr str_to_sentence
-#' @importFrom WikidataQueryServiceR query_wikidata
-
-create_nested_taxonomy <- function(taxa) {
-
-  if(length(taxa) > 1) {
-
-    list(
-      taxonRankName = taxa[[1]][1,]$rank,
-      taxonRankValue = taxa[[1]][1,]$name,
-      taxonId = purrr::map(.x = seq_len(nrow(taxa[[1]])),
-                           .f = ~{
-
-                             list(provider = taxa[[1]][.x,]$db,
-                                  taxonId = taxa[[1]][.x,]$id)
-
-                           }),
-      taxonomicClassification = create_nested_taxonomy(taxa[-1])
-    )
-
-  } else {
-
-    # Query common name from Wikidata
-    commonQuery <- paste0('
-      SELECT
-        ?item ?common_name
-        WHERE {
-          ?item wdt:P225', '"', taxa[[1]][1,]$name, '"', ';
-                wdt:P1843 ?common_name.
-
-        FILTER(LANGMATCHES(LANG(?common_name), "en"))
-
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }}
-      ')
-
-    commonName <- WikidataQueryServiceR::query_wikidata(sparql_query = commonQuery,
-                                                        format = "smart") |>
-      dplyr::pull("common_name") |>
-      stringr::str_to_sentence() |>
-      unique()
-
-    list(
-      taxonRankName = taxa[[1]][1,]$rank,
-      taxonRankValue = taxa[[1]][1,]$name,
-      commonName = commonName,
-      taxonId = purrr::map(.x = seq_len(nrow(taxa[[1]])),
-                           .f = ~{
-
-                             list(provider = taxa[[1]][.x,]$db,
-                                  taxonId = taxa[[1]][.x,]$id)
-
-                           })
-    )
-
-  }
 
 }
