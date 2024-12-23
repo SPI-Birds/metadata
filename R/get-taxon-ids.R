@@ -16,36 +16,75 @@
 get_taxon_ids <- function(species) {
 
   # Ensure that provided input is the scientific name of a species
-  species_name <- taxize::tax_name(sci = species,
-                                   get = "species") |>
-    dplyr::pull("species")
+  gbif_usage <- taxize::gbif_name_usage(name = species)
 
-  if(!is.na(species_name)) {
+  if(length(gbif_usage$results) > 0) {
 
     # Get IDs
     # - GBIF Backbone Taxonomy ID
-    gbif <- taxize::get_gbifid_(sci = species_name) %>%
+    gbif <- taxize::get_gbifid_(sci = species) %>%
       dplyr::bind_rows() %>%
       dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT") %>%
       dplyr::pull("usagekey")
 
+    if(length(gbif) == 0) {
+
+     gbif_synonym <- taxize::get_gbifid_(sci = species) %>%
+        dplyr::bind_rows() %>%
+        dplyr::filter(.data$status == "SYNONYM" & .data$matchtype == "EXACT")
+
+     # Save "correct" species name if synonym is provided
+     alt_species <- dplyr::pull(gbif_synonym, "species")
+
+     gbif <- taxize::get_gbifid_(sci = alt_species) %>%
+       dplyr::bind_rows() %>%
+       dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT") %>%
+       dplyr::pull("usagekey")
+
+    } else {
+
+      alt_species <- NULL
+
+    }
+
     # - EOL page ID
-    eol <- taxize::get_eolid(sci_com = species_name,
+    eol <- taxize::get_eolid(sci_com = species,
                              data_source = "EOL.*2022", rank = "species")
+
+    if(length(eol) == 0) {
+
+      eol <- taxize::get_eolid(sci_com = alt_species,
+                               data_source = "EOL.*2022", rank = "species")
+
+    }
 
     # - COL ID
     col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                            stringr::str_replace(species_name, " ", "+"))) |>
+                            stringr::str_replace(species, " ", "+"))) |>
       httr::content()
 
+    if(col$match == FALSE) {
+
+      col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
+                              stringr::str_replace(alt_species, " ", "+"))) |>
+        httr::content()
+
+    }
+
     # - ITIS TSN
-    tsn <- taxize::get_tsn(sci = species_name)
+    tsn <- taxize::get_tsn(sci = species, accepted = TRUE, ask = FALSE)
+
+    if(is.na(tsn)) {
+
+      tsn <- taxize::get_tsn(sci = alt_species, accepted = TRUE, ask = FALSE)
+
+    }
 
     # - EURING code
-    if(species_name %in% euring_codes$Current_Name) {
+    if(any(c(species, alt_species) %in% euring_codes$Current_Name)) {
 
       euring <- tibble::tibble(
-        "name" = species_name,
+        "name" = c(species, alt_species)[c(species, alt_species) %in% euring_codes$Current_Name],
         "rank" = "species",
         "id" = euring_codes %>%
           dplyr::filter(Current_Name == name) %>%
@@ -67,7 +106,7 @@ get_taxon_ids <- function(species) {
 
     # - EOL
     eol_class <- tibble::tibble(
-      "name" = species_name,
+      "name" = species,
       "rank" = "species",
       "id" = attributes(eol)$pageid,
       "db" = "https://eol.org"
@@ -98,7 +137,19 @@ get_taxon_ids <- function(species) {
     species_df <- dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
       dplyr::select(-"query") %>%
       dplyr::filter(.data$rank %in% c("kingdom", "phylum", "class", "order",
-                                      "family", "genus", "species"))
+                                      "family", "genus", "species")) |>
+      dplyr::mutate(status = dplyr::case_when(.data$rank == "species" & .data$name == {{species}} ~ "accepted",
+                                              TRUE ~ NA))
+
+    # Mark those instances where the alternative species name is used
+    if(!is.null(alt_species)) {
+
+      species_df <- species_df |>
+        dplyr::mutate(status = dplyr::case_when(.data$rank == "species" & .data$name == {{alt_species}} ~ "accepted",
+                                             .data$rank == "species" & .data$name != {{alt_species}} ~ "synonym",
+                                             TRUE ~ .data$status))
+
+    }
 
     return(species_df)
 

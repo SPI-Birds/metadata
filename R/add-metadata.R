@@ -95,8 +95,9 @@ add_metadata <- function(meta) {
   # Add new species metadata to species codes table
   taxa <- purrr::map(.x = meta$taxa,
                      .f = ~{
+
                        species_name <- .x |>
-                         dplyr::filter(.data$rank == "species") |>
+                         dplyr::filter(.data$rank == "species", .data$status == "accepted") |>
                          dplyr::distinct(.data$name) |>
                          dplyr::pull("name")
 
@@ -117,7 +118,8 @@ add_metadata <- function(meta) {
 
   if(length(taxa) != 0) {
 
-    species_codes <- add_species(taxa)
+    species_codes <- add_species(taxa) |>
+      dplyr::select(-"status")
 
   }
 
@@ -180,12 +182,12 @@ add_species <- function(taxa) {
 
   # Pivot taxonomic classification from convert_to_eml() to wide format of species_codes
   species_ids <- dplyr::bind_rows(taxa) |>
-    dplyr::filter(.data$rank == "species") |>
+    dplyr::filter(.data$rank == "species", .data$status == "accepted") |>
     dplyr::mutate("db" = dplyr::case_when(.data$db == "https://www.gbif.org" ~ "speciesGBIFID",
-                                        .data$db == "https://www.catalogueoflife.org" ~ "speciesCOLID",
-                                        .data$db == "https://eol.org" ~ "speciesEOLpageID",
-                                        .data$db == "https://www.itis.gov" ~ "speciesTSN",
-                                        .data$db == "https://euring.org" ~ "speciesEURINGCode")) |>
+                                          .data$db == "https://www.catalogueoflife.org" ~ "speciesCOLID",
+                                          .data$db == "https://eol.org" ~ "speciesEOLpageID",
+                                          .data$db == "https://www.itis.gov" ~ "speciesTSN",
+                                          .data$db == "https://euring.org" ~ "speciesEURINGCode")) |>
     tidyr::pivot_wider(values_from = "id",
                        names_from = "db") |>
     dplyr::mutate("speciesEOLpageID" = as.numeric(.data$speciesEOLpageID),
@@ -291,12 +293,19 @@ get_vernacular_name <- function(species) {
   eol <- taxize::get_eolid(sci_com = species,
                            data_source = "EOL.*2022", rank = "species")
 
-  eol_vern <- rvest::read_html(paste0("https://eol.org/pages/", attr(eol, "pageid"))) |>
-    rvest::html_element("title") |>
-    rvest::html_text() |>
-    stringr::str_extract("(?<=\\n).*(?=\\n)") |>
-    stringr::str_to_sentence()
+  if(!is.na(eol)) {
 
+    eol_vern <- rvest::read_html(paste0("https://eol.org/pages/", attr(eol, "pageid"))) |>
+      rvest::html_element("title") |>
+      rvest::html_text() |>
+      stringr::str_extract("(?<=\\n).*(?=\\n)") |>
+      stringr::str_to_sentence()
+
+  } else {
+
+    eol_vern <- NULL
+
+  }
 
   # Use Wikidata
   if(length(common_name) == 1) {
@@ -321,7 +330,7 @@ get_vernacular_name <- function(species) {
       }
 
       # Select name that matches the vernacular name used in EOL
-    } else if(any(common_name %in% eol_vern)) {
+    } else if(any(common_name %in% eol_vern) & !is.null(eol_vern)) {
 
       output <- eol_vern
 
@@ -338,8 +347,7 @@ get_vernacular_name <- function(species) {
     # If no Wikidata common name, ask user to pick GBIF or EOL
   } else if(length(common_name) == 0) {
 
-    selected <- utils::menu(choices = c(paste(gbif_vern, "(GBIF)"),
-                                        paste(eol_vern, "(EOL)")),
+    selected <- utils::menu(choices = c(gbif_vern, eol_vern)[!is.null(c(gbif_vern, eol_vern))],
                             title = "Which vernacular name to use?")
 
     output <- common_name[selected]
