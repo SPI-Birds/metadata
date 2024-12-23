@@ -276,8 +276,16 @@ get_vernacular_name <- function(species) {
     dplyr::pull("common_name") |>
     unique()
 
-  # Get GBIF vernacular name
-  gbif_vern <- stringr::str_to_sentence(taxize::gbif_name_usage(name = species)$vernacularName)
+  # Get GBIF vernacular name(s)
+  gbif_vern <- purrr::map(.x = taxize::gbif_name_usage(name = species)$results,
+             .f = ~{
+
+               stringr::str_to_sentence(.x$vernacularName)
+
+             }) |>
+    purrr::keep(~!is.null(.x)) |>
+    purrr::flatten_chr() |>
+    unique()
 
   # Get EOL vernacular name
   eol <- taxize::get_eolid(sci_com = species,
@@ -303,6 +311,15 @@ get_vernacular_name <- function(species) {
 
       output <- gbif_vern
 
+      if(length(gbif_vern) > 1) {
+
+        selected <- utils::menu(choices = c(gbif_vern),
+                                title = "Which GBIF vernacular name to use?")
+
+        output <- gbif_vern[selected]
+
+      }
+
       # Select name that matches the vernacular name used in EOL
     } else if(any(common_name %in% eol_vern)) {
 
@@ -312,7 +329,7 @@ get_vernacular_name <- function(species) {
     } else {
 
       selected <- utils::menu(choices = common_name,
-                              title = "Which vernacular name to use")
+                              title = "Which vernacular name to use?")
 
       output <- common_name[selected]
 
@@ -323,7 +340,7 @@ get_vernacular_name <- function(species) {
 
     selected <- utils::menu(choices = c(paste(gbif_vern, "(GBIF)"),
                                         paste(eol_vern, "(EOL)")),
-                            title = "Which vernacular name to use")
+                            title = "Which vernacular name to use?")
 
     output <- common_name[selected]
 

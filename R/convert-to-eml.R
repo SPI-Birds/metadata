@@ -1099,7 +1099,7 @@ set_study_site_ids <- function(entry) {
 
     # Extract siteID
     siteID <- site_codes |>
-      dplyr::filter("siteName" == entry$studySiteName) |>
+      dplyr::filter(.data$siteName == entry$studySiteName) |>
       dplyr::pull("siteID")
 
     # Does the metadata entry belong to a study already part of SPI-Birds?

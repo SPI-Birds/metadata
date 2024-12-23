@@ -48,7 +48,7 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10047,THAMEL,00140,45511273,7C5H9,2481410,554453,Thalassarche melanophris,"Temminck, 1828",Black-browed albatross
 10048,GYPBAR,02460,45515786,6KVBQ,2480649,175483,Gypaetus barbatus,"Linnaeus, 1758",Bearded vulture
 10049,CALDIO,00363,45511300,PYXH,2481521,203446,Calonectris diomedea,"Scopoli, 1769",Scopoli's shearwater
-10050,FALTIN,03040,45510788,3DTGW,9616058,175620,Falco tinnunculus,"Linnaeus, 1758","Kestrel, common kestrel"
+10050,FALTIN,03040,45510788,3DTGW,9616058,175620,Falco tinnunculus,"Linnaeus, 1758",Common kestrel
 10051,GLAPAS,07510,45518939,3G64C,5232162,555445,Glaucidium passerinum,"Linnaeus, 1758",Eurasian pygmy owl
 10052,EMBAUR,18760,45511174,39FSL,2491518,554225,Emberiza aureola,"Pallas, 1773",Yellow-breasted bunting
 10053,EMBSCH,18770,45511177,39FTN,2491557,179543,Emberiza schoeniclus,"Linnaeus, 1758",Common reed bunting
