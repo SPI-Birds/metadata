@@ -7,6 +7,10 @@
 #' @param tiles Character indicating the source for the base map. One of \link[leaflet]{providers}.
 #' @param file_format Character indicating the format to save in. Either 'png' or 'html'.
 #'
+#' @import leaflet
+#' @importFrom fontawesome fa
+#' @importFrom htmlwidgets saveWidget
+#' @importFrom webshot webshot
 #' @export
 
 # Function to make map for website
