@@ -32,15 +32,21 @@ if(!webshot::is_phantomjs_installed()) {
   
 }
 ```
+On Mac, using Homebrew, type:
+```
+brew tap homebrew/cask
+brew cask install phantomjs
+```
+
 ### Access & editing rights
 
 #### Google Sheet
 
-Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata Google Sheet]("https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/").
+Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata Google Sheet](https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/).
 
 #### SPI-Birds website
 
-Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get editing rights to the SPI-Birds website (hosted at NIOO-KNAW). This is done through a NIOO guest account, issued by NIOO's IT department, which might take some time.
+Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get editing rights to the [SPI-Birds website](https://spibirds.org) (hosted at NIOO-KNAW). This is done through a NIOO guest account, issued by NIOO's IT department, which might take some time.
 
 ### Workflow
 
@@ -52,7 +58,7 @@ Load package environment.
 # Regular load
 library(metadata)
 
-# Alternatively, if you are in the R project of the development version
+# Alternatively, if you are in the R project of the development version ()
 devtools::load_all(".")
 ```
 
