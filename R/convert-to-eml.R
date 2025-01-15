@@ -76,7 +76,7 @@ convert_to_eml <- function(email) {
   # Set end year to current year if project is missing and ongoing.
   if(is.na(entry$temporalCoverage_endDate)) {
 
-    endYear <- paste0(lubridate::year(Sys.time()), " (ongoing)")
+    endYear <- paste0(lubridate::year(max(c(entry$submissionDate, entry$lastUpdateDate), na.rm = TRUE)), " (ongoing)")
 
   } else {
 
@@ -293,7 +293,7 @@ convert_to_eml <- function(email) {
   beginDate <- entry$temporalCoverage_beginDate
   endDate <- entry$temporalCoverage_endDate
 
-  if(is.na(endDate)) endDate <- lubridate::year(Sys.Date())
+  if(is.na(endDate)) endDate <- lubridate::year(max(c(entry$submissionDate, entry$lastUpdateDate), na.rm = TRUE))
 
   # <geographicCoverage>
   # geographic description + bounding box or centroid

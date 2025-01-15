@@ -41,22 +41,23 @@ site_codes <- readr::read_csv(system.file("extdata", "site_codes.csv", package =
 study_codes <- readr::read_csv(system.file("extdata", "study_codes.csv", package = "metadata", mustWork = TRUE),
                                show_col_types = FALSE)
 
-#' SPI-Birds species table: species IDs, codes, and taxonomic ranks
+#' SPI-Birds (sub)species table
 #'
-#' Species information, including various taxonomic ranks, SPI-Birds-internal and external codes.
+#' Information on species and subspecies included in SPI-Birds, including SPI-Birds-internal and external codes and names.
 #'
-#' @format A data frame 51 rows and 10 variables
+#' @format A data frame 61 rows and 11 variables
 #' \describe{
-#'    \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species.}
-#'    \item{speciesID}{SPI-Birds' 6-letter species identifier. First three letters indicate the genus, last three letters indicate the species indicator.}
-#'    \item{speciesEURINGCode}{Species code used by \href{https://euring.org/}{EURING}. NA for species not included in EURING.}
-#'    \item{speciesEOLpageID}{Species page ID used by the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{speciesCOLID}{Species ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
-#'    \item{speciesGBIFID}{Species ID used by the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}.}
-#'    \item{speciesTSN}{Species taxonomic serial number (TSN) used by the \href{https://itis.gov}{Integrated Taxonomic Information System}.}
-#'    \item{scientificName}{Scientific name (genus + specific epithet) of the species according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{scientificNameAuthorship}{Authorship information of the scientific name, including date information if known. according to the \href{https://eol.org/}{Encyclopedia of Life}.}
-#'    \item{vernacularName}{English common name of species according to \href{https://https://www.wikidata.org/}{Wikidata} and/or GBIF.}
+#'    \item{speciesCode}{SPI-Birds' internal unique and persistent identifier for a species or subspecies.}
+#'    \item{speciesID}{SPI-Birds' 6-letter species or subspecies identifier. For species: first three letters indicate the genus, last three letters indicate the species indicator. For subspecies: first letter indicates the genus, second letter indicates the species, and the last four letters indicate the subspecies.}
+#'    \item{speciesEURINGCode}{Code used by \href{https://euring.org/}{EURING}. NA for species not included in EURING.}
+#'    \item{speciesEOLpageID}{Page ID used by the \href{https://eol.org/}{Encyclopedia of Life}.}
+#'    \item{speciesCOLID}{ID used by the \href{https://www.catalogueoflife.org/}{Catalogue of Life}.}
+#'    \item{speciesGBIFID}{ID used by the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}.}
+#'    \item{speciesTSN}{Taxonomic serial number (TSN) used by the \href{https://itis.gov}{Integrated Taxonomic Information System}.}
+#'    \item{scientificName}{Scientific name (genus + specific epithet (+ infraspecific epithet)) of the (sub)species according to the \href{https://eol.org/}{Encyclopedia of Life}.}
+#'    \item{scientificNameAuthorship}{Authorship information of the scientific name, including date information if known, according to the \href{https://eol.org/}{Encyclopedia of Life}.}
+#'    \item{vernacularName}{English common name of (sub)species according to \href{https://https://www.wikidata.org/}{Wikidata} and/or GBIF.}
+#'    \item{rank}{Taxonomic rank. Either 'species' or 'subspecies'.}
 #' }
 #'
 #' @name species_codes

@@ -97,7 +97,7 @@ add_metadata <- function(meta) {
                      .f = ~{
 
                        species_name <- .x |>
-                         dplyr::filter(.data$rank == "species", .data$status == "accepted") |>
+                         dplyr::filter(.data$status == "accepted") |>
                          dplyr::distinct(.data$name) |>
                          dplyr::pull("name")
 
@@ -182,7 +182,7 @@ add_species <- function(taxa) {
 
   # Pivot taxonomic classification from convert_to_eml() to wide format of species_codes
   species_ids <- dplyr::bind_rows(taxa) |>
-    dplyr::filter(.data$rank == "species", .data$status == "accepted") |>
+    dplyr::filter(.data$status == "accepted") |>
     dplyr::mutate("db" = dplyr::case_when(.data$db == "https://www.gbif.org" ~ "speciesGBIFID",
                                           .data$db == "https://www.catalogueoflife.org" ~ "speciesCOLID",
                                           .data$db == "https://eol.org" ~ "speciesEOLpageID",
@@ -193,15 +193,30 @@ add_species <- function(taxa) {
     dplyr::mutate("speciesEOLpageID" = as.numeric(.data$speciesEOLpageID),
                   "speciesTSN" = as.numeric(.data$speciesTSN),
                   "speciesGBIFID" = as.numeric(.data$speciesGBIFID)) |>
-    dplyr::rename("scientificName" = "name") |>
-    dplyr::select(-"rank")
+    dplyr::rename("scientificName" = "name")
 
   # Add missing info authorship & vernacular name
   species <- species_ids |>
-    dplyr::mutate(scientificNameAuthorship = purrr::map_chr(.x = .data$speciesGBIFID,
+    dplyr::mutate(scientificNameAuthorship = purrr::map2_chr(.x = .data$speciesGBIFID,
+                                                            .y = .data$scientificName,
                                                             .f = ~{
 
                                                               authorship <- taxize::gbif_name_usage(.x)$authorship
+
+                                                              if(authorship == "") {
+
+                                                                authorship <- purrr::map(.x = taxize::gbif_name_usage(name = .y)$results,
+                                                                           .f = ~{
+
+                                                                             .x$authorship
+
+                                                                           }) |>
+                                                                  purrr::keep(~.x != "") |>
+                                                                  unlist() |>
+                                                                  unique()
+
+                                                              }
+
                                                               stringr::str_remove_all(authorship, "\\(|\\)|\\)\\s|\\s$")
 
                                                             }),
@@ -213,18 +228,33 @@ add_species <- function(taxa) {
                                                   })) |>
     # Add internal speciesCode and speciesID
     dplyr::mutate(speciesCode = max(species_codes$speciesCode) + dplyr::row_number(),
-                  # Create internal speciesID
+                  # Create internal speciesID.
+                  # For species:
                   # - Format: first three letters of genus + first three letters of specific epithet
+                  # - If this combination of letters already exist, ask user to provide one.
+                  # For subspecies:
+                  # - Format: first letter of genus, first letter of specific epithet, first four letters of subspecific epithet
                   # - If this combination of letters already exist, ask user to provide one.
                   speciesID = purrr::map_chr(.x = .data$scientificName,
                                              .f = ~{
 
-                                               species_id <- stringr::str_split_1(string = .x,
-                                                                                  pattern = " ") |>
-                                                 stringr::str_sub_all(start = 1, end = 3) |>
-                                                 unlist() |>
-                                                 paste(collapse = "") |>
-                                                 toupper()
+                                               nomen <- stringr::str_split_1(string = .x, pattern = " ")
+
+                                               if(length(nomen) == 2) {
+
+                                                 species_id <- nomen |>
+                                                   stringr::str_sub(start = 1, end = 3) |>
+                                                   paste(collapse = "") |>
+                                                   toupper()
+
+                                               } else if(length(nomen) == 3) {
+
+                                                 species_id <- nomen |>
+                                                   stringr::str_sub(start = 1, end = c(1, 1, 4)) |>
+                                                   paste(collapse = "") |>
+                                                   toupper()
+
+                                               }
 
                                                if(species_id %in% species_codes$speciesID) {
 
@@ -280,18 +310,18 @@ get_vernacular_name <- function(species) {
 
   # Get GBIF vernacular name(s)
   gbif_vern <- purrr::map(.x = taxize::gbif_name_usage(name = species)$results,
-             .f = ~{
+                          .f = ~{
 
-               stringr::str_to_sentence(.x$vernacularName)
+                            stringr::str_to_sentence(.x$vernacularName)
 
-             }) |>
+                          }) |>
     purrr::keep(~!is.null(.x)) |>
     purrr::flatten_chr() |>
     unique()
 
   # Get EOL vernacular name
   eol <- taxize::get_eolid(sci_com = species,
-                           data_source = "EOL.*2022", rank = "species")
+                           data_source = "EOL.*2022")
 
   if(!is.na(eol)) {
 
@@ -350,7 +380,7 @@ get_vernacular_name <- function(species) {
     selected <- utils::menu(choices = c(gbif_vern, eol_vern)[!is.null(c(gbif_vern, eol_vern))],
                             title = "Which vernacular name to use?")
 
-    output <- common_name[selected]
+    output <- c(gbif_vern, eol_vern)[!is.null(c(gbif_vern, eol_vern))][selected]
 
   }
 

@@ -1,12 +1,12 @@
-#' Retrieve taxonomic classification, ids, and common names for a species
+#' Retrieve taxonomic classification, ids, and common names for a (sub)species
 #'
 #' Get identifiers from the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}, \href{https://eol.org/}{Encyclopedia of Life}(EOL), \href{https://www.catalogueoflife.org/}{Catalogue of Life}(COL), the \href{https://www.itis.gov/}{Integrated Taxonomic Information System}(ITIS), and \href{https://euring.org/data-and-codes/euring-databank-species-index}{EURING} where available.
 #'
 #' Only used within \link{convert_to_eml}.
 #'
-#' @param species The scientific name of the species. Format: '<genus> <specific epithet>'. For example, 'Parus major'.
+#' @param species The scientific name of the species or subspecies. Format: '<genus> <specific epithet>' (e.g., 'Parus major') or '<genus> <specific epithet> <subspecific epithet>' (e.g., 'Limosa limosa limosa').
 #'
-#' @returns a data frame with the taxonomic classification of the species and the associated ids of each rank in the classification. The data frame has 4 columns: name (taxon name), rank (taxon rank), id (taxon id), and db (the url to the database from which the record is retrieved).
+#' @returns a data frame with the taxonomic classification of the (sub)species and the associated ids of each rank in the classification. The data frame has 4 columns: name (taxon name), rank (taxon rank), id (taxon id), and db (the url to the database from which the record is retrieved).
 #'
 #' @import taxize
 #' @importFrom jsonlite fromJSON
@@ -14,6 +14,10 @@
 #' @importFrom WikidataQueryServiceR query_wikidata
 
 get_taxon_ids <- function(species) {
+
+  # Get expected rank (species or subspecies) of input
+  nomen <- stringr::str_split_1(species, pattern = " ")
+  expected_rank <- ifelse(length(nomen) == 2, "species", "subspecies")
 
   # Ensure that provided input is the scientific name of a species
   gbif_usage <- taxize::gbif_name_usage(name = species)
@@ -49,25 +53,33 @@ get_taxon_ids <- function(species) {
 
     # - EOL page ID
     eol <- taxize::get_eolid(sci_com = species,
-                             data_source = "EOL.*2022", rank = "species")
+                             data_source = "EOL.*2022")
 
     if(length(eol) == 0) {
 
       eol <- taxize::get_eolid(sci_com = alt_species,
-                               data_source = "EOL.*2022", rank = "species")
+                               data_source = "EOL.*2022")
 
     }
 
     # - COL ID
-    col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                            stringr::str_replace(species, " ", "+"))) |>
-      httr::content()
-
-    if(col$match == FALSE) {
+    if(expected_rank == "species") {
 
       col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                              stringr::str_replace(alt_species, " ", "+"))) |>
+                              stringr::str_replace(species, " ", "+"))) |>
         httr::content()
+
+      if(col$match == FALSE) {
+
+        col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
+                                stringr::str_replace(alt_species, " ", "+"))) |>
+          httr::content()
+
+      }
+
+    } else if(expected_rank == "subspecies") {
+
+      col <- NULL
 
     }
 
@@ -85,7 +97,7 @@ get_taxon_ids <- function(species) {
 
       euring <- tibble::tibble(
         "name" = c(species, alt_species)[c(species, alt_species) %in% euring_codes$Current_Name],
-        "rank" = "species",
+        "rank" = expected_rank,
         "id" = euring_codes %>%
           dplyr::filter(Current_Name == name) %>%
           dplyr::pull("EURING_Code"),
@@ -107,7 +119,7 @@ get_taxon_ids <- function(species) {
     # - EOL
     eol_class <- tibble::tibble(
       "name" = species,
-      "rank" = "species",
+      "rank" = expected_rank,
       "id" = attributes(eol)$pageid,
       "db" = "https://eol.org"
     )
@@ -122,7 +134,7 @@ get_taxon_ids <- function(species) {
                        "id" = col$usage$id) %>%
         dplyr::mutate("db" = "https://www.catalogueoflife.org")
 
-    } else { # Skip for species not in COL
+    } else { # Skip for (sub)species not in COL
 
       col_class <- NULL
 
@@ -137,23 +149,23 @@ get_taxon_ids <- function(species) {
     species_df <- dplyr::bind_rows(gbif_class, col_class, eol_class, itis_class, euring) %>%
       dplyr::select(-"query") %>%
       dplyr::filter(.data$rank %in% c("kingdom", "phylum", "class", "order",
-                                      "family", "genus", "species")) |>
-      dplyr::mutate(status = dplyr::case_when(.data$rank == "species" & .data$name == {{species}} ~ "accepted",
+                                      "family", "genus", "species", "subspecies")) |>
+      dplyr::mutate(status = dplyr::case_when(.data$rank == {{expected_rank}} & .data$name == {{species}} ~ "accepted",
                                               TRUE ~ NA))
 
-    # Mark those instances where the alternative species name is used
+    # Mark those instances where the alternative (sub)species name is used
     if(!is.null(alt_species)) {
 
       species_df <- species_df |>
-        dplyr::mutate(status = dplyr::case_when(.data$rank == "species" & .data$name == {{alt_species}} ~ "accepted",
-                                             .data$rank == "species" & .data$name != {{alt_species}} ~ "synonym",
-                                             TRUE ~ .data$status))
+        dplyr::mutate(status = dplyr::case_when(.data$rank == {{expected_rank}} & .data$name == {{alt_species}} ~ "accepted",
+                                                .data$rank == {{expected_rank}} & .data$name != {{alt_species}} ~ "synonym",
+                                                TRUE ~ .data$status))
 
     }
 
     return(species_df)
 
-    # If species name cannot be found, return NULL
+    # If (sub)species name cannot be found, return NULL
   } else {
 
     return(NULL)
