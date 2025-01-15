@@ -8,7 +8,7 @@ As part of SPI-Birds Network and Database, we collect metadata of various studie
 
 ### Questions or feedback
 
-If you have questions or feedback on the metadata form, or this R package, please reach out to us via the [issues page](https://github.com/SPI-Birds/metadata/issues) on this GitHub repository or by [email](mailto:spibirds@nioo.knaw.nl).
+If you have questions or feedback on the metadata form, or this R package, please reach out to us via the [issues page](https://github.com/SPI-Birds/metadata/issues) on this GitHub repository or by sending an email to [spibirds@nioo.knaw.nl](mailto:spibirds@nioo.knaw.nl).
 
 ---
 
@@ -32,6 +32,15 @@ if(!webshot::is_phantomjs_installed()) {
   
 }
 ```
+### Access & editing rights
+
+#### Google Sheet
+
+Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata Google Sheet]("https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/").
+
+#### SPI-Birds website
+
+Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get editing rights to the SPI-Birds website (hosted at NIOO-KNAW). This is done through a NIOO guest account, issued by NIOO's IT department, which might take some time.
 
 ### Workflow
 
@@ -64,6 +73,7 @@ Double check that the provided coordinates are correct. Sometimes custodians pro
 
 ```r
 # Convert metadata entry to EML
+# Use the email address with which you have access to the Google Sheet
 meta <- convert_to_eml("example@example.com")
 ```
 
@@ -81,3 +91,4 @@ create_map(meta$siteID)
 ```
 
 #### Step 6: Add metadata to website
+
