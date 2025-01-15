@@ -1,61 +1,62 @@
-speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBIFID,speciesTSN,scientificName,scientificNameAuthorship,vernacularName
-10001,PARMAJ,14640,45515267,75SVV,9705453,561864,Parus major,"Linnaeus, 1758",Great tit
-10002,CYACAE,14620,45515265,32NH2,2487879,559612,Cyanistes caeruleus,"Linnaeus, 1758",Eurasian blue tit
-10003,FICHYP,13490,45513708,6HWGP,2492606,560081,Ficedula hypoleuca,"Pallas, 1764",European pied flycatcher
-10004,SITEUR,14790,45513687,6Z52Z,2484916,563018,Sitta europaea,"Linnaeus, 1758",Eurasian nuthatch
-10005,PERATE,14610,45515260,4F2VB,2487871,561927,Periparus ater,"Linnaeus, 1758",Coal tit
-10006,PASMON,15980,45511015,4DXY4,5231198,179630,Passer montanus,"Linnaeus, 1758",Eurasian tree sparrow
-10007,FICALB,13480,45513709,6HWH4,2492601,560071,Ficedula albicollis,"Temminck, 1815",Collared flycatcher
-10008,POEPAL,14400,45515859,4KSC9,2487843,562354,Poecile palustris,"Linnaeus, 1758",Marsh tit
-10009,POECIN,14480,45511441,4KSBX,2487862,554384,Poecile cinctus,"Boddaert, 1783",Siberian tit
-10010,PHOPHO,11220,45511004,4GKQY,5739317,562037,Phoenicurus phoenicurus,"Linnaeus, 1758",Common redstart
-10011,JYNTOR,08480,45509717,3QXQR,8012314,178150,Jynx torquilla,"Linnaeus, 1758",Eurasian wryneck
-10012,LOPCRI,14540,45515262,3W3VB,2487883,560873,Lophophanes cristatus,"Linnaeus, 1758",European crested tit
-10013,EMBMEL,18810,45515773,6F7GC,9613112,554227,Emberiza melanocephala,"Scopoli, 1769",Black-headed bunting
-10014,PRUMOD,10840,45515701,4N8CC,5231763,562489,Prunella modularis,"Linnaeus, 1758",Dunnock
-10015,COLMON,15600,45510000,X733,6100954,916629,Coloeus monedula,"Linnaeus, 1758",Western jackdaw
-10016,CERFAM,14860,45513691,5XN9F,2487603,178795,Certhia familiaris,"Linnaeus, 1758",Eurasian treecreeper
-10017,STRALU,07610,45518936,532G9,9282206,555428,Strix aluco,"Linnaeus, 1758",Tawny owl
-10018,SITVAR,14570,1052001,NA,7341813,NA,Sittiparus varius,"Temminck & Schlegel, 1847",Varied tit
-10019,PARMIN,NA,45518810,75SW7,5844847,916512,Parus minor,"Temminck & Schlegel, 1848",Japanese tit
-10020,STEHIR,06150,45509327,6ZSCT,9367409,176888,Sterna hirundo,"Linnaeus, 1758",Common tern
-10021,THACHL,00151,45511277,7C5GX,2481399,554452,Thalassarche chlororhynchos,"Gmelin, 1789",Atlantic yellow-nosed albatross
-10022,PHOFUS,35910,45512096,4GKHX,2481376,174530,Phoebetria fusca,"Hilsenberg, 1822",Sooty albatross
-10023,MACGIG,00211,45512099,3X6TD,2481515,174594,Macronectes giganteus,"Gmelin, 1789",Southern giant-petrel
-10024,DIODAB,36000,45512093,36B3L,5722866,824053,Diomedea dabbenena,"Mathews, 1929",Tristan albatross
-10025,OCELEU,NA,45509015,48C48,2482012,174628,Oceanodroma leucorhoa,"Vieillot, 1818",Leach's storm petrel
-10026,CALALB,04970,45509224,PK3Z,2481748,176669,Calidris alba,"Pallas, 1764",Sanderling
-10027,PERINF,15430,45518973,4F45W,2482449,561934,Perisoreus infaustus,"Linnaeus, 1758",Siberian jay
-10028,POEMON,14420,45518807,4KSC7,2487866,562353,Poecile montanus,"Conrad von Baldenstein, 1827",Willow tit
-10029,TACBIC,09830,45511453,54CBB,2489181,178431,Tachycineta bicolor,"Vieillot, 1808",Tree swallow
-10030,PASSAN,18260,45511198,4DXYF,5231142,179314,Passerculus sandwichensis,"J.F.Gmelin, 1789",Savannah sparrow
-10031,HAEOST,04500,45509143,3J8XQ,7788295,176469,Haematopus ostralegus,"Linnaeus, 1758",Eurasian oystercatcher
-10032,PASDOM,15910,45511014,4DXXM,5231190,179628,Passer domesticus,"Linnaeus, 1758",House sparrow
-10033,STUVUL,15820,45510981,5384V,9809229,179637,Sturnus vulgaris,"Linnaeus, 1758",Common starling
-10034,CERBRA,14870,45513692,69N9M,7806848,559138,Certhia brachydactyla,"C.L.Brehm, 1820",Short-toed treecreeper
-10035,TURMER,11870,45510215,7CYVX,2490719,179757,Turdus merula,"Linnaeus, 1758",Common blackbird
-10036,OENOEN,11460,45511011,48X9H,5231240,179814,Oenanthe oenanthe,"Linnaeus, 1758",Northern wheatear
-10037,CHANIV,NA,45509161,69PKT,6065879,824030,Charadrius nivosus,"Cassin, 1858",Snowy plover
-10038,URIAAL,06340,45509343,7DS6Y,2481342,176974,Uria aalge,"Pontoppidan, 1763",Common guillemot
-10039,FULATR,04290,45509131,6K3W6,2474377,176290,Fulica atra,"Linnaeus, 1758",Eurasian coot
-10040,AEGFUN,07700,45510747,658RG,5739298,177938,Aegolius funereus,"Linnaeus, 1758",Boreal owl
-10041,DICHOT,15270,45515233,6D642,2493967,559767,Dicrurus hottentottus,"Linnaeus, 1766",Hair-crested drongo
-10042,LARHYP,05990,45509297,3SBQG,2481127,176808,Larus hyperboreus,"Gunnerus, 1767",Glaucous gull
-10043,PUFMAU,00463,45513552,4QFXW,5229360,723254,Puffinus mauretanicus,"Lowe, 1921",Balearic shearwater
-10044,RHYJUB,NA,1045974,6X862,2474354,176405,Rhynochetos jubatus,"J.Verreaux & Des Murs, 1860",Kagu
-10045,ACRARU,12530,45515418,9L48,2493128,558408,Acrocephalus arundinaceus,"Linnaeus, 1758",Great reed-warbler
-10046,SPHDEM,NA,45512089,6YXJD,5229384,174462,Spheniscus demersus,"Linnaeus, 1758",African penguin
-10047,THAMEL,00140,45511273,7C5H9,2481410,554453,Thalassarche melanophris,"Temminck, 1828",Black-browed albatross
-10048,GYPBAR,02460,45515786,6KVBQ,2480649,175483,Gypaetus barbatus,"Linnaeus, 1758",Bearded vulture
-10049,CALDIO,00363,45511300,PYXH,2481521,203446,Calonectris diomedea,"Scopoli, 1769",Scopoli's shearwater
-10050,FALTIN,03040,45510788,3DTGW,9616058,175620,Falco tinnunculus,"Linnaeus, 1758",Common kestrel
-10051,GLAPAS,07510,45518939,3G64C,5232162,555445,Glaucidium passerinum,"Linnaeus, 1758",Eurasian pygmy owl
-10052,EMBAUR,18760,45511174,39FSL,2491518,554225,Emberiza aureola,"Pallas, 1773",Yellow-breasted bunting
-10053,EMBSCH,18770,45511177,39FTN,2491557,179543,Emberiza schoeniclus,"Linnaeus, 1758",Common reed bunting
-10054,EMBYES,18790,45518908,39FTZ,2491531,559896,Emberiza yessoensis,"Swinhoe, 1874",Japanese reed bunting
-10055,EMBFUC,18690,45518902,39FT4,2491548,559881,Emberiza fucata,"Pallas, 1776",Chestnut-eared bunting
-10056,EMBSPO,18530,45518907,39FTR,2491522,559890,Emberiza spodocephala,"Pallas, 1776",Black-faced bunting
-10057,LUSCAL,NA,NA,3WFW3,2492537,179820,Luscinia calliope,"Pallas, 1776",Siberian rubythroat
-10058,HIRRUS,09920,45511466,3M4S7,9515886,178448,Hirundo rustica,"Linnaeus, 1758",Barn swallow
-10059,FALAMU,03080,45514163,3DTFM,2480998,560066,Falco amurensis,"Radde, 1863",Amur falcon
-10060,PICSER,NA,51507883,NA,10704098,NA,Pica serica,"Gould, 1845",Oriental magpie
+speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBIFID,speciesTSN,scientificName,scientificNameAuthorship,vernacularName,rank
+10001,PARMAJ,14640,45515267,75SVV,9705453,561864,Parus major,"Linnaeus, 1758",Great tit,species
+10002,CYACAE,14620,45515265,32NH2,2487879,559612,Cyanistes caeruleus,"Linnaeus, 1758",Eurasian blue tit,species
+10003,FICHYP,13490,45513708,6HWGP,2492606,560081,Ficedula hypoleuca,"Pallas, 1764",European pied flycatcher,species
+10004,SITEUR,14790,45513687,6Z52Z,2484916,563018,Sitta europaea,"Linnaeus, 1758",Eurasian nuthatch,species
+10005,PERATE,14610,45515260,4F2VB,2487871,561927,Periparus ater,"Linnaeus, 1758",Coal tit,species
+10006,PASMON,15980,45511015,4DXY4,5231198,179630,Passer montanus,"Linnaeus, 1758",Eurasian tree sparrow,species
+10007,FICALB,13480,45513709,6HWH4,2492601,560071,Ficedula albicollis,"Temminck, 1815",Collared flycatcher,species
+10008,POEPAL,14400,45515859,4KSC9,2487843,562354,Poecile palustris,"Linnaeus, 1758",Marsh tit,species
+10009,POECIN,14480,45511441,4KSBX,2487862,554384,Poecile cinctus,"Boddaert, 1783",Siberian tit,species
+10010,PHOPHO,11220,45511004,4GKQY,5739317,562037,Phoenicurus phoenicurus,"Linnaeus, 1758",Common redstart,species
+10011,JYNTOR,08480,45509717,3QXQR,8012314,178150,Jynx torquilla,"Linnaeus, 1758",Eurasian wryneck,species
+10012,LOPCRI,14540,45515262,3W3VB,2487883,560873,Lophophanes cristatus,"Linnaeus, 1758",European crested tit,species
+10013,EMBMEL,18810,45515773,6F7GC,9613112,554227,Emberiza melanocephala,"Scopoli, 1769",Black-headed bunting,species
+10014,PRUMOD,10840,45515701,4N8CC,5231763,562489,Prunella modularis,"Linnaeus, 1758",Dunnock,species
+10015,COLMON,15600,45510000,X733,6100954,916629,Coloeus monedula,"Linnaeus, 1758",Western jackdaw,species
+10016,CERFAM,14860,45513691,5XN9F,2487603,178795,Certhia familiaris,"Linnaeus, 1758",Eurasian treecreeper,species
+10017,STRALU,07610,45518936,532G9,9282206,555428,Strix aluco,"Linnaeus, 1758",Tawny owl,species
+10018,SITVAR,14570,1052001,NA,7341813,NA,Sittiparus varius,"Temminck & Schlegel, 1847",Varied tit,species
+10019,PARMIN,NA,45518810,75SW7,5844847,916512,Parus minor,"Temminck & Schlegel, 1848",Japanese tit,species
+10020,STEHIR,06150,45509327,6ZSCT,9367409,176888,Sterna hirundo,"Linnaeus, 1758",Common tern,species
+10021,THACHL,00151,45511277,7C5GX,2481399,554452,Thalassarche chlororhynchos,"Gmelin, 1789",Atlantic yellow-nosed albatross,species
+10022,PHOFUS,35910,45512096,4GKHX,2481376,174530,Phoebetria fusca,"Hilsenberg, 1822",Sooty albatross,species
+10023,MACGIG,00211,45512099,3X6TD,2481515,174594,Macronectes giganteus,"Gmelin, 1789",Southern giant-petrel,species
+10024,DIODAB,36000,45512093,36B3L,5722866,824053,Diomedea dabbenena,"Mathews, 1929",Tristan albatross,species
+10025,OCELEU,NA,45509015,48C48,2482012,174628,Oceanodroma leucorhoa,"Vieillot, 1818",Leach's storm petrel,species
+10026,CALALB,04970,45509224,PK3Z,2481748,176669,Calidris alba,"Pallas, 1764",Sanderling,species
+10027,PERINF,15430,45518973,4F45W,2482449,561934,Perisoreus infaustus,"Linnaeus, 1758",Siberian jay,species
+10028,POEMON,14420,45518807,4KSC7,2487866,562353,Poecile montanus,"Conrad von Baldenstein, 1827",Willow tit,species
+10029,TACBIC,09830,45511453,54CBB,2489181,178431,Tachycineta bicolor,"Vieillot, 1808",Tree swallow,species
+10030,PASSAN,18260,45511198,4DXYF,5231142,179314,Passerculus sandwichensis,"J.F.Gmelin, 1789",Savannah sparrow,species
+10031,HAEOST,04500,45509143,3J8XQ,7788295,176469,Haematopus ostralegus,"Linnaeus, 1758",Eurasian oystercatcher,species
+10032,PASDOM,15910,45511014,4DXXM,5231190,179628,Passer domesticus,"Linnaeus, 1758",House sparrow,species
+10033,STUVUL,15820,45510981,5384V,9809229,179637,Sturnus vulgaris,"Linnaeus, 1758",Common starling,species
+10034,CERBRA,14870,45513692,69N9M,7806848,559138,Certhia brachydactyla,"C.L.Brehm, 1820",Short-toed treecreeper,species
+10035,TURMER,11870,45510215,7CYVX,2490719,179757,Turdus merula,"Linnaeus, 1758",Common blackbird,species
+10036,OENOEN,11460,45511011,48X9H,5231240,179814,Oenanthe oenanthe,"Linnaeus, 1758",Northern wheatear,species
+10037,CHANIV,NA,45509161,69PKT,6065879,824030,Charadrius nivosus,"Cassin, 1858",Snowy plover,species
+10038,URIAAL,06340,45509343,7DS6Y,2481342,176974,Uria aalge,"Pontoppidan, 1763",Common guillemot,species
+10039,FULATR,04290,45509131,6K3W6,2474377,176290,Fulica atra,"Linnaeus, 1758",Eurasian coot,species
+10040,AEGFUN,07700,45510747,658RG,5739298,177938,Aegolius funereus,"Linnaeus, 1758",Boreal owl,species
+10041,DICHOT,15270,45515233,6D642,2493967,559767,Dicrurus hottentottus,"Linnaeus, 1766",Hair-crested drongo,species
+10042,LARHYP,05990,45509297,3SBQG,2481127,176808,Larus hyperboreus,"Gunnerus, 1767",Glaucous gull,species
+10043,PUFMAU,00463,45513552,4QFXW,5229360,723254,Puffinus mauretanicus,"Lowe, 1921",Balearic shearwater,species
+10044,RHYJUB,NA,1045974,6X862,2474354,176405,Rhynochetos jubatus,"J.Verreaux & Des Murs, 1860",Kagu,species
+10045,ACRARU,12530,45515418,9L48,2493128,558408,Acrocephalus arundinaceus,"Linnaeus, 1758",Great reed-warbler,species
+10046,SPHDEM,NA,45512089,6YXJD,5229384,174462,Spheniscus demersus,"Linnaeus, 1758",African penguin,species
+10047,THAMEL,00140,45511273,7C5H9,2481410,554453,Thalassarche melanophris,"Temminck, 1828",Black-browed albatross,species
+10048,GYPBAR,02460,45515786,6KVBQ,2480649,175483,Gypaetus barbatus,"Linnaeus, 1758",Bearded vulture,species
+10049,CALDIO,00363,45511300,PYXH,2481521,203446,Calonectris diomedea,"Scopoli, 1769",Scopoli's shearwater,species
+10050,FALTIN,03040,45510788,3DTGW,9616058,175620,Falco tinnunculus,"Linnaeus, 1758",Common kestrel,species
+10051,GLAPAS,07510,45518939,3G64C,5232162,555445,Glaucidium passerinum,"Linnaeus, 1758",Eurasian pygmy owl,species
+10052,EMBAUR,18760,45511174,39FSL,2491518,554225,Emberiza aureola,"Pallas, 1773",Yellow-breasted bunting,species
+10053,EMBSCH,18770,45511177,39FTN,2491557,179543,Emberiza schoeniclus,"Linnaeus, 1758",Common reed bunting,species
+10054,EMBYES,18790,45518908,39FTZ,2491531,559896,Emberiza yessoensis,"Swinhoe, 1874",Japanese reed bunting,species
+10055,EMBFUC,18690,45518902,39FT4,2491548,559881,Emberiza fucata,"Pallas, 1776",Chestnut-eared bunting,species
+10056,EMBSPO,18530,45518907,39FTR,2491522,559890,Emberiza spodocephala,"Pallas, 1776",Black-faced bunting,species
+10057,LUSCAL,NA,NA,3WFW3,2492537,179820,Luscinia calliope,"Pallas, 1776",Siberian rubythroat,species
+10058,HIRRUS,09920,45511466,3M4S7,9515886,178448,Hirundo rustica,"Linnaeus, 1758",Barn swallow,species
+10059,FALAMU,03080,45514163,3DTFM,2480998,560066,Falco amurensis,"Radde, 1863",Amur falcon,species
+10060,PICSER,NA,51507883,NA,10704098,NA,Pica serica,"Gould, 1845",Oriental magpie,species
+10061,LLLIMO,05321,1227666,NA,6177939,176693,Limosa limosa limosa,"Linnaeus, 1758",Western black-tailed godwit,subspecies

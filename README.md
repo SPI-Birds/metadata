@@ -58,7 +58,7 @@ Load package environment.
 # Regular load
 library(metadata)
 
-# Alternatively, if you are in the R project of the development version ()
+# Alternatively, if you have opened the R project in the main directory of this repo
 devtools::load_all(".")
 ```
 
@@ -71,8 +71,10 @@ Navigate to the SPI-Birds metadata Google Sheet.
 browseURL("https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/")
 
 ```
-Double check that all values for the metadata entry are filled in as expected, without typos.
-Double check that the provided coordinates are correct. Sometimes custodians provide coordinates in degrees, minutes, seconds, which are somewhat of compared to decimal degrees.
+Double check that all values for the metadata entry are filled in as expected, without typos. For example:
+
+- check format of coordinates. Sometimes custodians provide coordinates in degrees, minutes, seconds as decimal degrees, which are somewhat off compared to actual decimal degrees.
+- check format of DOI. It should start with one of: `doi:`, `https://doi.org/`, `doi.org/`
 
 
 #### Step 3: Convert Jotform entry to EML.xml
