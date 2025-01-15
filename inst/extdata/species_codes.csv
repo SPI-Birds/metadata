@@ -60,3 +60,4 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10059,FALAMU,03080,45514163,3DTFM,2480998,560066,Falco amurensis,"Radde, 1863",Amur falcon,species
 10060,PICSER,NA,51507883,NA,10704098,NA,Pica serica,"Gould, 1845",Oriental magpie,species
 10061,LLLIMO,05321,1227666,NA,6177939,176693,Limosa limosa limosa,"Linnaeus, 1758",Western black-tailed godwit,subspecies
+10062,NUMPHA,05380,45509190,483T6,2481784,176599,Numenius phaeopus,"Linnaeus, 1758",Eurasian whimbrel,species

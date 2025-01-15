@@ -68,7 +68,7 @@ create_map <- function(site = NULL,
 
       unlink(here::here("inst", "extdata", "maps",
                         paste0(site$siteID, "-map", "_files")),
-             recursive = TRUE)
+             recursive = TRUE, force = TRUE)
 
     }
 
@@ -105,7 +105,7 @@ create_map <- function(site = NULL,
 
       unlink(here::here("inst", "extdata", "maps",
                         paste0("SPI-Birds", "-map", "_files")),
-             recursive = TRUE)
+             recursive = TRUE, force = TRUE)
 
     }
 

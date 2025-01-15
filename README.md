@@ -52,16 +52,12 @@ Contact Stefan ([s.vriend@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get ed
 
 #### Step 1: Load package
 
-Load package environment.
+Load package developer environment.
 
 ```r
-# Regular load
-library(metadata)
-
-# Alternatively, if you have opened the R project in the main directory of this repo
+# Open the R project in the main directory of this repo and load complete package
 devtools::load_all(".")
 ```
-
 
 #### Step 2: Check Google Sheet
 
@@ -90,6 +86,9 @@ meta <- convert_to_eml("example@example.com")
 ```r
 # Add metadata to internal tables
 add_metadata(meta)
+
+# Reload package environment
+devtools::load_all(".")
 ```
 #### Step 5: Create screenshot of Leaflet map
 
@@ -100,3 +99,11 @@ create_map(meta$siteID)
 
 #### Step 6: Add metadata to website
 
+-to be added-
+
+#### Step 7: Commit and push changes to GitHub
+
+Commit:
+
+- updated internal tables in inst/extdata
+- archived internal tables in inst/extdata/archive

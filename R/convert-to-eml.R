@@ -897,7 +897,7 @@ convert_to_eml <- function(email) {
   if(study_ids$studyID %in% study_codes$studyID) {
 
     packageId <- study_codes %>%
-      dplyr::filter(.data$studyID == {{study_ids$studyID}}) %>%
+      dplyr::filter(.data$studyID == study_ids$studyID) %>%
       dplyr::pull("studyUUID")
 
     # Generate new UUID for new metadata entries
