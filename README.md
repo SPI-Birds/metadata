@@ -78,7 +78,7 @@ browseURL("https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOV
 Double check that all values for the metadata entry are filled in as expected, without typos. For example:
 
 -   check format of coordinates. Sometimes custodians provide coordinates in degrees, minutes, seconds as decimal degrees, which are somewhat off compared to actual decimal degrees.
--   check format of DOI. It should start with one of: `doi:`, `https://doi.org/`, `doi.org/`
+-   check whether the DOI is resolvable. DOIs do not necessarily need a prefix for the script to read them correctly. If they do have a prefix, it should be one of: `doi:`, `https://doi.org/`, `doi.org/`.
 
 #### Step 3: Convert Jotform entry to EML.xml
 

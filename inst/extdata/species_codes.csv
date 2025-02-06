@@ -63,3 +63,5 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10062,NUMPHA,05380,45509190,483T6,2481784,176599,Numenius phaeopus,"Linnaeus, 1758",Eurasian whimbrel,species
 10063,BUCLEA,NA,1048004,NMVD,2476041,554468,Bucorvus leadbeateri,"Vigors, 1825",Southern ground hornbill,species
 10064,TURBIC,NA,45514640,59PJM,2493297,563537,Turdoides bicolor,"Jardine, 1831",Southern pied babbler,species
+10065,SIASIA,11340,45510184,4X5FY,2490941,179801,Sialia sialis,"Linnaeus, 1758",Eastern bluebird,species
+10066,CICCIC,01340,45513558,5Z5T3,2481912,174907,Ciconia ciconia,"Linnaeus, 1758",White stork,species
