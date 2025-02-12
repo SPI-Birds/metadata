@@ -68,3 +68,15 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10067,PHISOC,NA,45515588,76XYY,2492357,562003,Philetairus socius,"Latham, 1790",Sociable weaver,species
 10068,PHYCAB,NA,45514373,77F55,2486087,562064,Phyllastrephus cabanisi,"Sharpe, 1882",Cabanis's greenbul,species
 10069,STEALB,06240,45509317,52G25,5789279,824126,Sternula albifrons,"Pallas, 1764",Little tern,species
+10070,PLUDOM,04841,45509152,4KKPW,2480328,176564,Pluvialis dominica,"P.L.S.Müller, 1776",American golden plover,species
+10071,CALBAI,05060,45509233,PK43,2481770,176655,Calidris bairdii,"Coues, 1861",Baird's sandpiper,species
+10072,CALSUB,05160,52232257,9HCHR,8292425,1192598,Calidris subruficollis,"Vieillot, 1819",Buff-breasted sandpiper,species
+10073,CALALP,05120,45509239,PK42,2481759,176661,Calidris alpina,"Linnaeus, 1758",Dunlin,species
+10074,LIMSCO,05270,45509181,72DFK,2481670,176679,Limnodromus scolopaceus,"Say, 1822",Long-billed dowitcher,species
+10075,CALMEL,05070,45509234,PK4C,2481744,176653,Calidris melanotos,"Vieillot, 1819",Pectoral sandpiper,species
+10076,PHAFUL,05650,45509252,4FRHR,5229390,176734,Phalaropus fulicarius,"Linnaeus, 1758",Red phalarope,species
+10077,PHALOB,05640,45509251,4FRHS,5739290,176735,Phalaropus lobatus,"Linnaeus, 1758",Red-necked phalarope,species
+10078,AREINT,05610,45509217,67RLB,2481776,176571,Arenaria interpres,"Linnaeus, 1758",Ruddy turnstone,species
+10079,CALPUS,04980,45509225,PK4G,2481764,176667,Calidris pusilla,"Linnaeus, 1766",Semipalmated sandpiper,species
+10080,CALMAU,04990,45509226,PK4B,2481742,176668,Calidris mauri,"Cabanis, 1857",Western sandpiper,species
+10081,CALFUS,05050,45509232,PK48,2481756,176654,Calidris fuscicollis,"Vieillot, 1819",White-rumped sandpiper,species
