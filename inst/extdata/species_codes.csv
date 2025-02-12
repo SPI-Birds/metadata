@@ -65,3 +65,5 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10064,TURBIC,NA,45514640,59PJM,2493297,563537,Turdoides bicolor,"Jardine, 1831",Southern pied babbler,species
 10065,SIASIA,11340,45510184,4X5FY,2490941,179801,Sialia sialis,"Linnaeus, 1758",Eastern bluebird,species
 10066,CICCIC,01340,45513558,5Z5T3,2481912,174907,Ciconia ciconia,"Linnaeus, 1758",White stork,species
+10067,PHISOC,NA,45515588,76XYY,2492357,562003,Philetairus socius,"Latham, 1790",Sociable weaver,species
+10068,PHYCAB,NA,45514373,77F55,2486087,562064,Phyllastrephus cabanisi,"Sharpe, 1882",Cabanis's greenbul,species

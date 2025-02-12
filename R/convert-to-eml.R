@@ -201,12 +201,23 @@ convert_to_eml <- function(email) {
 
     }
 
+    # Add ORCID if available
+    if(is.na(entry$metadataProvider_userId) | entry$metadataProvider_userId == "") {
+
+      meta_user_id <- NULL
+
+    } else {
+
+      meta_user_id <- list(directory = "https://orcid.org/",
+                           userId = entry$metadataProvider_userId)
+
+    }
+
     metadataProvider <- list(individualName = list(givenName = entry$metadataProvider_givenName,
                                                    surName = entry$metadataProvider_surName),
                              organizationName = entry$metadataProvider_organizationName,
                              electronicMailAddress = metadataProviderEmail,
-                             userId = list(directory = "https://orcid.org/",
-                                           userId = entry$metadataProvider_userId))
+                             userId = meta_user_id)
 
     # Assign node id
     metadataProvider <- c(metadataProvider,
@@ -256,12 +267,23 @@ convert_to_eml <- function(email) {
 
     }
 
+    # Add ORCID if available
+    if(is.na(entry$contact_userId) | entry$contact_userId == "") {
+
+      contact_user_id <- NULL
+
+    } else {
+
+      contact_user_id <- list(directory = "https://orcid.org/",
+                              userId = entry$contact_userId)
+
+    }
+
     contact <- list(individualName = list(givenName = entry$contact_givenName,
                                           surName = entry$contact_surName),
                     organizationName = entry$metadataProvider_organizationName,
                     electronicMailAddress = contactEmail,
-                    userId = list(directory = "https://orcid.org/",
-                                  userId = entry$contact_userId))
+                    userId = contact_user_id)
 
     # Assign node id
     contact <- c(contact,
