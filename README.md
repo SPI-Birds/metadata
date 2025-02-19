@@ -12,11 +12,11 @@ If you have questions or feedback on the metadata form, or this R package, pleas
 
 ------------------------------------------------------------------------
 
-## Guide for the SPI-Birds Team
+*for the SPI-Birds Team*
 
-### Installation
+## Installation
 
-#### PhantomJS
+### PhantomJS
 
 Maps are created through screenshots of the interactive html maps of [leaflet](https://leafletjs.com/). For this, [PhantomJS](https://phantomjs.org/) needs to be installed.
 
@@ -36,17 +36,17 @@ brew tap homebrew/cask
 brew cask install phantomjs
 ```
 
-### Access & editing rights
+## Access & editing rights
 
-#### GitHub repository
+### GitHub repository
 
 If you have troubles cloning this repository locally, contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access.
 
-#### Google Sheets
+### Google Sheets
 
 Contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata sheet](https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/) and the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937).
 
-#### SPI-Birds website
+### SPI-Birds website
 
 To get access to the SPI-Birds website, which is part of NIOO's web sites, you first have to log in through an eduID associated with your email address.
 
@@ -63,9 +63,9 @@ To get access to the SPI-Birds website, which is part of NIOO's web sites, you f
 
 Once yourd eduID is set up and linked to the NIOO website, contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get editing rights to the [SPI-Birds website](https://spibirds.org). This is done via by the web service team of NIOO, and might take some time to be completed.
 
-### Workflow
+## Workflow
 
-#### 1. Pull latest changes & load package
+### 1. Pull latest changes & load package
 
 Pull the latest changes of this repository.
 
@@ -80,7 +80,7 @@ Load package developer environment.
 devtools::load_all(".")
 ```
 
-#### 2. Check Google Sheet
+### 2. Check Google Sheet
 
 Navigate to the SPI-Birds metadata Google Sheet.
 
@@ -93,7 +93,7 @@ Double check that all values for the metadata entry are filled in as expected, w
 -   check format of coordinates. Sometimes custodians provide coordinates in degrees, minutes, seconds as decimal degrees, which are somewhat off compared to actual decimal degrees.
 -   check whether the DOI is resolvable. DOIs do not necessarily need a prefix for the script to read them correctly. If they do have a prefix, it should be one of: `doi:`, `https://doi.org/`, `doi.org/`.
 
-#### 3. Convert Jotform entry to EML.xml
+### 3. Convert Jotform entry to EML.xml
 
 ``` r
 # Convert metadata entry to EML
@@ -104,7 +104,7 @@ The code prompts you to pick a three-letter code for the study site. These can b
 
 The code might also prompt you to select a taxon id associated with a species. Enter the **row number** of the record that matches the species. Most often this is the record where rank = species (often row number 1).
 
-#### 4. Add processed metadata to SPI-Birds internal tables
+### 4. Add processed metadata to SPI-Birds internal tables
 
 ``` r
 # Add metadata to internal tables
@@ -115,15 +115,15 @@ devtools::load_all(".")
 ```
 The code prompts you to provide a code for the institution associated with the metadata submission. There is no limit to the number of letters you can use here. Again, please use the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937) for inspiration how other institutions relate to their codes.
 
-#### 5. Create screenshot of Leaflet map
+### 5. Create screenshot of Leaflet map
 
 ``` r
 create_map(meta$siteID)
 ```
 
-#### 6. Add metadata to website
+### 6. Add metadata to website
 
-##### Open a recent metadata web page
+#### Open a recent metadata web page
 
 We use a recent metadata web page as a template for the web page of the new metadata submission.
 
@@ -142,13 +142,13 @@ We use a recent metadata web page as a template for the web page of the new meta
 From here on, the instructions will refer to this web page as the "template".
 
 
-##### Create a new page for the metadata submission
+#### Create a new page for the metadata submission
 
 6. In a second tab, go to [https://nioo.knaw.nl/en](https://nioo.knaw.nl/en).
 7. Hover over to `Content` > `Add Content` and click `Populatie`.
 
 
-##### Fill new page with filter metadata
+#### Fill new page with filter metadata
 
 Filling the web page we do using the xml file created in [step 3](#3-convert-jotform-entry-to-emlxml).
 
@@ -167,35 +167,35 @@ First, we fill in the necessary fields that relate to the filters on the [SPI-Bi
 12. For **Latitude**, copy the coordinates from the xml file. If a bounding box is given, provide the average from the north and south bounding coordinate.
 13. For **Longitude**, copy the coordinates from the xml file. If a bounding box is given, provide the average from the west and east bounding coordinate.
 14. Under **Metadata**
-    - Click `Choose file`
-    - Find the xml file in *~\metadata\inst\extdata\eml* and open
+    - Click `Choose file`.
+    - Find the xml file in *~\metadata\inst\extdata\eml* and open.
 15. Under **Dataset Request**
-    - Leave **URL** empty
-    - Leave **Link text** empty
+    - Leave **URL** empty.
+    - Leave **Link text** empty.
 16. Under **Details**
-    - For **Country**, select the country (if unavailable, see [Add country](#add-country-to-list-of-options))
-    - For **Species**, select the species (if unavailable, see [Add species](#add-species-to-list-of-options))
-    - For **Data pipeline**, keep default (`No`)
-    - For **Max. nr. of nestboxes**, fill in if relevant
-    - For **Nests monitoerd**, leave empty
-    - For **Start year**, select one of three options. Note that the direction of the arrows is wrong
-    - For **Running period**, tick `Current` if the study is ongoing
-    - For **Starts**, fill in the first year of the study
-    - For **Ends**, fill in the last year of the study. This field disappears when the `Current` button is ticked
-    - For **ID data**, select relevant mark types
-    - For **Environmental data**, select relevant measurements
-    - For **Individual data**, select relevant measurements
-    - For **Habitat**, select relevant habitat *if available*
-    - For **Genetic data**, select relevant samples taken
-    - For **Basic breeding data**, click `Yes`. This should always be `Yes`, because otherwise the study is not fit for SPI-Birds
-    - For **Winter data**, select the relevant activities
-    - For **Feeding at nest data**, select whether feeding activity was measured
+    - For **Country**, select the country (if unavailable, see [Add country](#add-country-to-list-of-options)).
+    - For **Species**, select the species (if unavailable, see [Add species](#add-species-to-list-of-options)).
+    - For **Data pipeline**, keep default (`No`).
+    - For **Max. nr. of nestboxes**, fill in if relevant.
+    - For **Nests monitoerd**, leave empty.
+    - For **Start year**, select one of three options. Note that the direction of the arrows is wrong.
+    - For **Running period**, tick `Current` if the study is ongoing.
+    - For **Starts**, fill in the first year of the study.
+    - For **Ends**, fill in the last year of the study. This field disappears when the `Current` button is ticked.
+    - For **ID data**, select relevant mark types.
+    - For **Environmental data**, select relevant measurements.
+    - For **Individual data**, select relevant measurements.
+    - For **Habitat**, select relevant habitat if available.
+    - For **Genetic data**, select relevant samples taken.
+    - For **Basic breeding data**, click `Yes`. This should always be `Yes`, because otherwise the study is not fit for SPI-Birds.
+    - For **Winter data**, select the relevant activities.
+    - For **Feeding at nest data**, select whether feeding activity was measured.
 17. Click `Save`.
 
 A green info box should appear that says: "Populatie \<studyID\> has been created."
 
 
-##### Fill new page with metadata tables and update url
+#### Fill new page with metadata tables and update url
 
 Then, we re-edit the page, add the html tables, and update the url.
 
@@ -203,7 +203,7 @@ Then, we re-edit the page, add the html tables, and update the url.
 19. In the **Revision log message** on the right, write 'add tables + update url alias'.
 20. In the **URL alias** box on the right  
     - Untick `Generate automatic URL alias`. The greyed-out text box should become editable.
-    - In the text box, write '/project/spi-birds/study/\<study name\>'.
+    - In the text box, add '/project/spi-birds' at the start, so that it reads '/project/spi-birds/study/\<study name\>', where study name corresponds to the title of the web page.
 21. On the left side, go to **Content**. Here we will create the three metadata tables based on the tables of the template.  
     - Click on the downward arrow, and click `Add Text`.
     - A text box should appear. In the header of the box, click on `Source`.
@@ -259,7 +259,7 @@ Then, we re-edit the page, add the html tables, and update the url.
 
 A green info box should appear that says: "Unlocked. Anyone can now edit this content." 
 
-##### Add country to list of options
+#### Add country to list of options
 
 If the new metadata entry is associated with a country new to SPI-Birds, add them to filter list as follows.
 
@@ -270,7 +270,7 @@ If the new metadata entry is associated with a country new to SPI-Birds, add the
 5. In the field **Name**, write the English name of the country.
 6. Scroll down and click `Save`.
 
-##### Add species to list of options
+#### Add species to list of options
 
 If the new metadata entry is associated with a species new to SPI-Birds, add them to filter list as follows.
 
@@ -282,7 +282,7 @@ If the new metadata entry is associated with a species new to SPI-Birds, add the
 6. In the field **Description**, write the scientific name of the (sub)species. Make sure the name is italicised.
 7. Scroll down and click `Save`.
 
-### 7. Commit and push changes to GitHub
+## 7. Commit and push changes to GitHub
 
 Commit:
 
@@ -291,7 +291,7 @@ Commit:
 
 Use a concise and informative commit message, such as "Process submission for \<siteID\>" or "Add metadata for \<siteID\>", where \<siteID\> is the three-letter code for the submitted entry.
 
-### 8. Inform SPI-Birds team and contributors
+## 8. Inform SPI-Birds team and contributors
 
 The final step is sharing the new web page with the rest of the SPI-Birds team and inform the contributors that the website is live.
 
