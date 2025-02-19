@@ -65,6 +65,11 @@ Once yourd eduID is set up and linked to the NIOO website, contact Stefan ([s.vr
 
 ## Workflow
 
+Check the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937) for new metadata submissions. 
+
+Mark your initials in the "metadata_processed_by" column when you start processing an entry.
+
+
 ### 1. Pull latest changes & load package
 
 Pull the latest changes of this repository.
