@@ -93,7 +93,7 @@ Double check that all values for the metadata entry are filled in as expected, w
 -   check format of coordinates. Sometimes custodians provide coordinates in degrees, minutes, seconds as decimal degrees, which are somewhat off compared to actual decimal degrees.
 -   check whether the DOI is resolvable. DOIs do not necessarily need a prefix for the script to read them correctly. If they do have a prefix, it should be one of: `doi:`, `https://doi.org/`, `doi.org/`.
 
-#### 3. Convert Jotform entry to EML.xml {#eml}
+#### 3. Convert Jotform entry to EML.xml
 
 ``` r
 # Convert metadata entry to EML
@@ -150,7 +150,7 @@ From here on, the instructions will refer to this web page as the "template".
 
 ##### Fill new page with filter metadata
 
-Filling the web page we do using the xml file created in [step 3](#eml).
+Filling the web page we do using the xml file created in [step 3](#3-convert-jotform-entry-to-emlxml).
 
 First, we fill in the necessary fields that relate to the filters on the [SPI-Birds map](https://nioo.knaw.nl/en/projects/spi-birds/studies) and the blue 'Details' box of a study's page (e.g., [page for Hoge Veluwe](https://nioo.knaw.nl/en/projects/spi-birds/study/hoge-veluwe))
 
@@ -173,8 +173,8 @@ First, we fill in the necessary fields that relate to the filters on the [SPI-Bi
     - Leave **URL** empty
     - Leave **Link text** empty
 16. Under **Details**
-    - For **Country**, select the country (if unavailable, see [Add country](#add-country))
-    - For **Species**, select the species (if unavailable, see [Add species](#add-species))
+    - For **Country**, select the country (if unavailable, see [Add country](#add-country-to-list-of-options))
+    - For **Species**, select the species (if unavailable, see [Add species](#add-species-to-list-of-options))
     - For **Data pipeline**, keep default (`No`)
     - For **Max. nr. of nestboxes**, fill in if relevant
     - For **Nests monitoerd**, leave empty
@@ -259,35 +259,35 @@ Then, we re-edit the page, add the html tables, and update the url.
 
 A green info box should appear that says: "Unlocked. Anyone can now edit this content." 
 
-##### Add country to list of options {#add-country}
+##### Add country to list of options
 
 If the new metadata entry is associated with a country new to SPI-Birds, add them to filter list as follows.
 
-a. Go to [https://nioo.knaw.nl/en](https://nioo.knaw.nl/en).
-b. Log in to the website using your eduID.
-c. Hover over to `Structure` > `Taxonomy` and click `SPI-Birds country options`.
-d. Click `Add term`.
-e. In the field **Name**, write the English name of the country.
-f. Scroll down and click `Save`.
+1. Go to [https://nioo.knaw.nl/en](https://nioo.knaw.nl/en).
+2. Log in to the website using your eduID.
+3. Hover over to `Structure` > `Taxonomy` and click `SPI-Birds country options`.
+4. Click `Add term`.
+5. In the field **Name**, write the English name of the country.
+6. Scroll down and click `Save`.
 
-##### Add species to list of options {#add-species}
+##### Add species to list of options
 
 If the new metadata entry is associated with a species new to SPI-Birds, add them to filter list as follows.
 
-a. Go to [https://nioo.knaw.nl/en](https://nioo.knaw.nl/en).
-b. Log in to the website using your eduID.
-c. Hover over to `Structure` > `Taxonomy` and click `SPI-Birds species options`.
-d. Click `Add term`.
-e. In the field **Name**, write the English name of the (sub)species.
-f. In the field **Description**, write the scientific name of the (sub)species. Make sure the name is italicised.
-g. Scroll down and click `Save`.
+1. Go to [https://nioo.knaw.nl/en](https://nioo.knaw.nl/en).
+2. Log in to the website using your eduID.
+3. Hover over to `Structure` > `Taxonomy` and click `SPI-Birds species options`.
+4. Click `Add term`.
+5. In the field **Name**, write the English name of the (sub)species.
+6. In the field **Description**, write the scientific name of the (sub)species. Make sure the name is italicised.
+7. Scroll down and click `Save`.
 
 ### 7. Commit and push changes to GitHub
 
 Commit:
 
--   updated internal tables in inst/extdata
--   archived internal tables in inst/extdata/archive
+-   updated internal tables in [inst/extdata](/inst/extdata)
+-   archived internal tables in [inst/extdata/archive](/inst/extdata/archive)
 
 Use a concise and informative commit message, such as "Process submission for \<siteID\>" or "Add metadata for \<siteID\>", where \<siteID\> is the three-letter code for the submitted entry.
 
