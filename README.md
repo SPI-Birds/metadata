@@ -297,4 +297,4 @@ The final step is sharing the new web page with the rest of the SPI-Birds team a
 
 Inform [spibirds@nioo.knaw.nl](mailto:spibirds@nioo.knaw.nl) or [Stefan](mailto:s.vriend@nioo.knaw.nl) that a new web page is created. Attach the .xml file and the map, so that the can be archived on the NIOO servers.
 
-Inform the contributors that the web page of their study is now live. Cc spibirds@nioo.knaw.nl. Use the [email template](~/inst/extdata/email-template.txt).
+Inform the contributors that the web page of their study is now live. Cc spibirds@nioo.knaw.nl. Use the [email template](/inst/extdata/email-template).

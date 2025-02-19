@@ -80,3 +80,4 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10079,CALPUS,04980,45509225,PK4G,2481764,176667,Calidris pusilla,"Linnaeus, 1766",Semipalmated sandpiper,species
 10080,CALMAU,04990,45509226,PK4B,2481742,176668,Calidris mauri,"Cabanis, 1857",Western sandpiper,species
 10081,CALFUS,05050,45509232,PK48,2481756,176654,Calidris fuscicollis,"Vieillot, 1819",White-rumped sandpiper,species
+10082,PCSINE,00722,4375014,NA,4408474,824231,Phalacrocorax carbo sinensis,"Blumenbach, 1798",Continental great cormorant,subspecies
