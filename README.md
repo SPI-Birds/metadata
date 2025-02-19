@@ -42,9 +42,9 @@ brew cask install phantomjs
 
 If you have troubles cloning this repository locally, contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access.
 
-### Google Sheets
+### Google Drive & Sheets
 
-Contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata sheet](https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/) and the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937).
+Contact Stefan ([s.vriend\@nioo.knaw.nl](mailto:s.vriend@nioo.knaw.nl)) to get access to the [SPI-Birds metadata folder](https://drive.google.com/drive/folders/1yULGc0yzyMqOfuouSTL3W7UVw5yReHSQ?usp=drive_link), the [SPI-Birds metadata sheet](https://docs.google.com/spreadsheets/d/1sNlpXSbZtGXD_gfvDRcGdUUmfepOVKOOfL6s4znBB20/) and the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937).
 
 ### SPI-Birds website
 
@@ -65,9 +65,9 @@ Once yourd eduID is set up and linked to the NIOO website, contact Stefan ([s.vr
 
 ## Workflow
 
-Check the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937) for new metadata submissions. 
+### 0. Check for new metadata submissions
 
-Mark your initials in the "metadata_processed_by" column when you start processing an entry.
+Check the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937) for new metadata submissions. Mark your initials in the "metadata_processed_by" column when you start processing an entry.
 
 
 ### 1. Pull latest changes & load package
@@ -300,6 +300,6 @@ Use a concise and informative commit message, such as "Process submission for \<
 
 The final step is sharing the new web page with the rest of the SPI-Birds team and inform the contributors that the website is live.
 
-Inform [spibirds@nioo.knaw.nl](mailto:spibirds@nioo.knaw.nl) or [Stefan](mailto:s.vriend@nioo.knaw.nl) that a new web page is created. Attach the .xml file and the map, so that the can be archived on the NIOO servers.
-
-Inform the contributors that the web page of their study is now live. Cc spibirds@nioo.knaw.nl. Use the [email template](/inst/extdata/email-template).
+- Inform [spibirds@nioo.knaw.nl](mailto:spibirds@nioo.knaw.nl) or [Stefan](mailto:s.vriend@nioo.knaw.nl) that a new web page is created.
+- Upload the xml file and the map to the [metadata folder on Google Drive](https://drive.google.com/drive/folders/1yULGc0yzyMqOfuouSTL3W7UVw5yReHSQ?usp=drive_link), so that the can be archived on the NIOO servers.
+- Inform the contributors that the web page of their study is now live. Cc spibirds@nioo.knaw.nl. Use the [email template](/inst/extdata/email-template).
