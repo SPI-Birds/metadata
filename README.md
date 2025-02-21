@@ -20,6 +20,7 @@ If you have questions or feedback on the metadata form, or this R package, pleas
 
 Maps are created through screenshots of the interactive html maps of [leaflet](https://leafletjs.com/). For this, [PhantomJS](https://phantomjs.org/) needs to be installed.
 
+In R:
 ``` r
 # Install PhantomJS through {webshot} (Windows only)
 if(!webshot::is_phantomjs_installed()) {
@@ -72,6 +73,8 @@ Check the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoT
 
 ### 1. Pull latest changes & load package
 
+Open R or RStudio.
+
 Pull the latest changes of this repository.
 
 ``` r
@@ -120,11 +123,14 @@ devtools::load_all(".")
 ```
 The code prompts you to provide a code for the institution associated with the metadata submission. There is no limit to the number of letters you can use here. Again, please use the [SPI-Birds overview sheet](https://docs.google.com/spreadsheets/d/1LoTxe8nIb2qXKagm9ATYzG2NeLp9KHMC9oRb3uKsw1w/edit?gid=1178676937#gid=1178676937) for inspiration how other institutions relate to their codes.
 
+The result is an EML.xml file which is stored in [inst/extdata/eml](/inst/extdata/eml)
+
 ### 5. Create screenshot of Leaflet map
 
 ``` r
 create_map(meta$siteID)
 ```
+The result is a png which is stored in [inst/extdata/maps](/inst/extdata/maps)
 
 ### 6. Add metadata to website
 
