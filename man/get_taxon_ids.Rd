@@ -2,15 +2,15 @@
 % Please edit documentation in R/get-taxon-ids.R
 \name{get_taxon_ids}
 \alias{get_taxon_ids}
-\title{Retrieve taxonomic classification, ids, and common names for a species}
+\title{Retrieve taxonomic classification, ids, and common names for a (sub)species}
 \usage{
 get_taxon_ids(species)
 }
 \arguments{
-\item{species}{The scientific name of the species. Format: '\if{html}{\out{<genus>}} \if{html}{\out{<specific epithet>}}'. For example, 'Parus major'.}
+\item{species}{The scientific name of the species or subspecies. Format: '\if{html}{\out{<genus>}} \if{html}{\out{<specific epithet>}}' (e.g., 'Parus major') or '\if{html}{\out{<genus>}} \if{html}{\out{<specific epithet>}} \if{html}{\out{<subspecific epithet>}}' (e.g., 'Limosa limosa limosa').}
 }
 \value{
-a data frame with the taxonomic classification of the species and the associated ids of each rank in the classification. The data frame has 4 columns: name (taxon name), rank (taxon rank), id (taxon id), and db (the url to the database from which the record is retrieved).
+a data frame with the taxonomic classification of the (sub)species and the associated ids of each rank in the classification. The data frame has 4 columns: name (taxon name), rank (taxon rank), id (taxon id), and db (the url to the database from which the record is retrieved).
 }
 \description{
 Get identifiers from the \href{https://www.gbif.org/dataset/d7dddbf4-2cf0-4f39-9b2a-bb099caae36c}{GBIF Backbone Taxonomy}, \href{https://eol.org/}{Encyclopedia of Life}(EOL), \href{https://www.catalogueoflife.org/}{Catalogue of Life}(COL), the \href{https://www.itis.gov/}{Integrated Taxonomic Information System}(ITIS), and \href{https://euring.org/data-and-codes/euring-databank-species-index}{EURING} where available.
