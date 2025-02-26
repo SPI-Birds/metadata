@@ -1,16 +1,18 @@
 #' Create an additional party
 #'
-#' The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will help with the creation of that party.
+#' The responsible party (creator), metadata provider, and contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This interactive function will help with the creation of that party.
 #'
+#' @returns a structured list that can be directly plugged into an EML.xml as a creator, metadata provider, or contact.
+#' @export
 
 create_party <- function() {
 
   cat("Required fields are marked with *.\nIf a field is not relevant, hit Enter.\n")
 
+  type <- utils::menu(choices = c("person", "organisation"),
+                      title = "Do you want to create a person or an organisation?")
 
-  type <- menu(choices = c("person", "organisation"),
-               title = "Do you want to create a person or an organisation?")
-
+  # Only if party is a person
   if(type == 1) {
 
     first_name <- readline("First name*: ")
@@ -29,7 +31,8 @@ create_party <- function() {
 
   organisation <- readline("Organisation name*: ")
 
-  while(type == "organisation" & organisation == "") {
+  # If party is organisation, organisation cannot be blank
+  while(type == 2 & organisation == "") {
 
     organisation <- readline("Organisation name*: ")
 
@@ -81,14 +84,16 @@ create_party <- function() {
 
 }
 
-#' Add party to metadata xml
+#' Add party to metadata EML.xml
 #'
-#' The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will add the created party (with \link{create_party}) to the right element in the metadata xml.
+#' The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will add the created party (with \link{create_party}) to the right element in the metadata EML.xml.
 #'
-#' @param file Character indicating file path to the metadata xml to which the party should be added
+#' @param file Character indicating file path to the metadata EML.xml to which the party should be added
 #' @param party List output form \link{create_party} containing the party details
-#' @param add_to Character indicating the elements to which the party should be added. One or more of: "creator", "metadataProvider", "contact"
+#' @param add_to Character vector indicating the elements to which the party should be added. At least one of: "creator", "metadataProvider", "contact".
 #'
+#' @returns an EML.xml from the updated metadata
+#' @export
 
 add_party_to_xml <- function(file = file.choose(),
                              party,
@@ -100,6 +105,9 @@ add_party_to_xml <- function(file = file.choose(),
 
   meta <- EML::read_eml(file)
 
+  # New parties have to be added to the relevant element
+  # i.e., <creator>, <metadataProvider>, <contact>,
+  # as well as to the list of personnel in <project>
   if("creator" %in% add_to) {
 
     meta$dataset$creator <- list(meta$dataset$creator,
@@ -157,6 +165,7 @@ add_party_to_xml <- function(file = file.choose(),
 
   }
 
+  # Ensure that the updated EML.xml is still schema valid.
   if(EML::eml_validate(meta) == TRUE) {
 
     cat("The updated EML document is schema-valid.\n")

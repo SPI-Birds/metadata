@@ -6,6 +6,9 @@
 \usage{
 create_party()
 }
+\value{
+a structured list that can be directly plugged into an EML.xml as a creator, metadata provider, or contact.
+}
 \description{
-The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will help with the creation of that party.
+The responsible party (creator), metadata provider, and contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This interactive function will help with the creation of that party.
 }

@@ -2,17 +2,20 @@
 % Please edit documentation in R/add-party.R
 \name{add_party_to_xml}
 \alias{add_party_to_xml}
-\title{Add party to metadata xml}
+\title{Add party to metadata EML.xml}
 \usage{
 add_party_to_xml(file = file.choose(), party, add_to)
 }
 \arguments{
-\item{file}{Character indicating file path to the metadata xml to which the party should be added}
+\item{file}{Character indicating file path to the metadata EML.xml to which the party should be added}
 
 \item{party}{List output form \link{create_party} containing the party details}
 
-\item{add_to}{Character indicating the elements to which the party should be added. One or more of: "creator", "metadataProvider", "contact"}
+\item{add_to}{Character vector indicating the elements to which the party should be added. At least one of: "creator", "metadataProvider", "contact".}
+}
+\value{
+an EML.xml from the updated metadata
 }
 \description{
-The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will add the created party (with \link{create_party}) to the right element in the metadata xml.
+The Responsible Party (creator), Metadata Provider, and Contact in Jotform are limited to a single entry. In some instances, data contributors wish to add more than one party to these entities. This function will add the created party (with \link{create_party}) to the right element in the metadata EML.xml.
 }
