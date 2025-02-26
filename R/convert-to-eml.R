@@ -1025,7 +1025,6 @@ read_metadata <- function(email) {
 
   metadatabase <- google_metadata %>%
     janitor::clean_names(case = "lower_camel") %>%
-    dplyr::select(-"streetAddress", -"streetAddressLine2") %>%
     dplyr::rename(creator_entity = "theResponsiblePartyIs",
                   creator_givenName = "firstName",
                   creator_surName = "surnameS",
