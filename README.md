@@ -112,6 +112,21 @@ The code prompts you to pick a three-letter code for the study site. These can b
 
 The code might also prompt you to select a taxon id associated with a species. Enter the **row number** of the record that matches the species. Most often this is the record where rank = species (often row number 1).
 
+### 3b. Add additional parties
+
+In some instances, data contributors wish to add more than one person or organisation but the Jotform only allows one for each of Responsible Party, Metadata Provider, and Contact. To add an additional party:
+
+```r
+# Create party object
+party <- create_party()
+
+# Create list of elements to which the party should be added
+elements <- c("creator", "metadataProvider", "contact")
+
+# Add party to those elements in the EML.xml
+add_party_to_xml(party = party, add_to = elements)
+```
+
 ### 4. Add processed metadata to SPI-Birds internal tables
 
 ``` r

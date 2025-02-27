@@ -25,7 +25,16 @@ create_party <- function() {
     if(email_address == "") email_address <- NULL
 
     orcid <- readline("ORCID: ")
-    if(orcid == "") orcid <- NULL
+    if(orcid == "") {
+
+      orcid <- NULL
+
+    } else {
+
+      orcid <- list(directory = "https://orcid.org/",
+                    userId = orcid)
+
+    }
 
   }
 
@@ -93,11 +102,15 @@ create_party <- function() {
 #' @param add_to Character vector indicating the elements to which the party should be added. At least one of: "creator", "metadataProvider", "contact".
 #'
 #' @returns an EML.xml from the updated metadata
+#'
+#' @importFrom rlang arg_match
 #' @export
 
 add_party_to_xml <- function(file = file.choose(),
                              party,
-                             add_to) {
+                             add_to = c("creator", "metadataProvider", "contact")) {
+
+  add_to <- rlang::arg_match(add_to)
 
   # Select xml file
   cat("Select a metadata xml file\n")
@@ -176,7 +189,12 @@ add_party_to_xml <- function(file = file.choose(),
 
   } else {
 
-    stop("The updated EML document is not schema-valid.")
+    stop("The created EML document is not schema-valid.\n",
+         "Create an issue on GitHub or make fixes to the function.",
+         "\n",
+         paste("Validation error found in:", attr(EML::eml_validate(meta),
+                                                  "errors"), "\n"),
+         call. = FALSE)
 
   }
 
