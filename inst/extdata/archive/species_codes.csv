@@ -82,3 +82,6 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10081,CALFUS,05050,45509232,PK48,2481756,176654,Calidris fuscicollis,"Vieillot, 1819",White-rumped sandpiper,species
 10082,PCSINE,00722,4375014,NA,4408474,824231,Phalacrocorax carbo sinensis,"Blumenbach, 1798",Continental great cormorant,subspecies
 10083,FALNAU,03030,45514151,3DTGF,9584698,175646,Falco naumanni,"J.G.Fleischer, 1818",Lesser kestrel,species
+10084,AMMSAV,18280,45511206,CTL9,2491123,179333,Ammodramus savannarum,"J.F.Gmelin, 1789",Grasshopper sparrow,species
+10085,STUMAG,19070,45511136,537YX,2484254,179034,Sturnella magna,"Linnaeus, 1758",Eastern meadowlark,species
+10086,SPIAME,18840,1052104,4Z99P,2490363,179165,Spiza americana,"J.F.Gmelin, 1789",Dickcissel,species
