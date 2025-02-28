@@ -85,3 +85,6 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10084,AMMSAV,18280,45511206,CTL9,2491123,179333,Ammodramus savannarum,"J.F.Gmelin, 1789",Grasshopper sparrow,species
 10085,STUMAG,19070,45511136,537YX,2484254,179034,Sturnella magna,"Linnaeus, 1758",Eastern meadowlark,species
 10086,SPIAME,18840,1052104,4Z99P,2490363,179165,Spiza americana,"J.F.Gmelin, 1789",Dickcissel,species
+10087,CORGAR,08410,45513609,5ZZQS,2475365,554518,Coracias garrulus,"Linnaeus, 1758",European roller,species
+10088,OTUSCO,07390,45518929,4B8JH,2497701,555376,Otus scops,"Linnaeus, 1758",Eurasian scops owl,species
+10089,ATHNOC,07570,45517847,687BR,2497266,555471,Athene noctua,"Scopoli, 1769",Little owl,species
