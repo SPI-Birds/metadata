@@ -28,26 +28,37 @@ get_taxon_ids <- function(species) {
     # - GBIF Backbone Taxonomy ID
     gbif <- taxize::get_gbifid_(sci = species) %>%
       dplyr::bind_rows() %>%
-      dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT") %>%
-      dplyr::pull("usagekey")
+      dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT")
 
-    if(length(gbif) == 0) {
+    if(nrow(gbif) == 0) {
 
-     gbif_synonym <- taxize::get_gbifid_(sci = species) %>%
+      gbif_synonym <- taxize::get_gbifid_(sci = species) %>%
         dplyr::bind_rows() %>%
         dplyr::filter(.data$status == "SYNONYM" & .data$matchtype == "EXACT")
 
-     # Save "correct" species name if synonym is provided
-     alt_species <- dplyr::pull(gbif_synonym, "species")
+      message("\nThis taxon is marked as 'SYNONYM' by GBIF.")
+      message("\nEnter row number to select a taxon:\n")
+      print(gbif_synonym)
+      take <- scan(n = 1, quiet = TRUE, what = "raw")
 
-     gbif <- taxize::get_gbifid_(sci = alt_species) %>%
-       dplyr::bind_rows() %>%
-       dplyr::filter(.data$status == "ACCEPTED" & .data$matchtype == "EXACT") %>%
-       dplyr::pull("usagekey")
+      gbif_key <- gbif_synonym |>
+        dplyr::slice(as.numeric(take)) |>
+        dplyr::select("usagekey", "status")
+
+    } else if(nrow(gbif) > 1){
+
+      message("\nEnter row number to select a taxon:\n")
+      print(gbif)
+      take <- scan(n = 1, quiet = TRUE, what = "raw")
+
+      gbif_key <- gbif |>
+        dplyr::slice(as.numeric(take)) |>
+        dplyr::select("usagekey", "status")
 
     } else {
 
-      alt_species <- NULL
+      gbif_key <- gbif |>
+        dplyr::select("usagekey", "status")
 
     }
 
@@ -57,8 +68,7 @@ get_taxon_ids <- function(species) {
 
     if(length(eol) == 0) {
 
-      eol <- taxize::get_eolid(sci_com = alt_species,
-                               data_source = "EOL.*2022")
+      eol <- NULL
 
     }
 
@@ -71,9 +81,7 @@ get_taxon_ids <- function(species) {
 
       if(col$match == FALSE) {
 
-        col <- httr::GET(paste0("https://api.checklistbank.org/dataset/3LR/match/nameusage?q=",
-                                stringr::str_replace(alt_species, " ", "+"))) |>
-          httr::content()
+        col <- NULL
 
       }
 
@@ -88,15 +96,15 @@ get_taxon_ids <- function(species) {
 
     if(is.na(tsn)) {
 
-      tsn <- taxize::get_tsn(sci = alt_species, accepted = TRUE, ask = FALSE)
+      tsn <- NULL
 
     }
 
     # - EURING code
-    if(any(c(species, alt_species) %in% euring_codes$Current_Name)) {
+    if(species %in% euring_codes$Current_Name) {
 
       euring <- tibble::tibble(
-        "name" = c(species, alt_species)[c(species, alt_species) %in% euring_codes$Current_Name],
+        "name" = species[species %in% euring_codes$Current_Name],
         "rank" = expected_rank,
         "id" = euring_codes %>%
           dplyr::filter(Current_Name == name) %>%
@@ -112,17 +120,39 @@ get_taxon_ids <- function(species) {
 
     # Get taxonomic classifications
     # - GBIF
-    gbif_class <- rbind(taxize::classification(gbif, db = "gbif")) %>%
+    gbif_class <- rbind(taxize::classification(gbif_key$usagekey, db = "gbif")) %>%
       dplyr::mutate("db" = "https://www.gbif.org",
                     "id" = as.character(.data$id))
 
+    if(gbif_key$status == "SYNONYM") {
+
+      gbif_class <- gbif_class |>
+        dplyr::slice(1:(dplyr::n()-1)) |>
+        dplyr::add_row(
+          name = species,
+          rank = gbif_class |> dplyr::slice_tail(n = 1) |> dplyr::pull(rank),
+          id = as.character(gbif_key$usagekey),
+          query = as.character(gbif_key$usagekey),
+          db = "https://www.gbif.org"
+        )
+
+    }
+
     # - EOL
-    eol_class <- tibble::tibble(
-      "name" = species,
-      "rank" = expected_rank,
-      "id" = attributes(eol)$pageid,
-      "db" = "https://eol.org"
-    )
+    if(!is.null(eol)) {
+
+      eol_class <- tibble::tibble(
+        "name" = species,
+        "rank" = expected_rank,
+        "id" = attributes(eol)$pageid,
+        "db" = "https://eol.org"
+      )
+
+    } else {
+
+      eol_class <- NULL
+
+    }
 
     # - COL
     if("usage" %in% names(col)) {
@@ -141,8 +171,16 @@ get_taxon_ids <- function(species) {
     }
 
     # - ITIS
-    itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
-      dplyr::mutate("db" = "https://www.itis.gov")
+    if(!is.null(tsn)) {
+
+      itis_class <- rbind(taxize::classification(tsn, db = "itis")) %>%
+        dplyr::mutate("db" = "https://www.itis.gov")
+
+    } else {
+
+      itis_class <- NULL
+
+    }
 
     # Combine ids, names and classifications
     # Only include the ranks 'kingdom', 'phylum', 'class', 'order', 'family', 'genus', and 'species'
@@ -151,17 +189,8 @@ get_taxon_ids <- function(species) {
       dplyr::filter(.data$rank %in% c("kingdom", "phylum", "class", "order",
                                       "family", "genus", "species", "subspecies")) |>
       dplyr::mutate(status = dplyr::case_when(.data$rank == {{expected_rank}} & .data$name == {{species}} ~ "accepted",
+
                                               TRUE ~ NA))
-
-    # Mark those instances where the alternative (sub)species name is used
-    if(!is.null(alt_species)) {
-
-      species_df <- species_df |>
-        dplyr::mutate(status = dplyr::case_when(.data$rank == {{expected_rank}} & .data$name == {{alt_species}} ~ "accepted",
-                                                .data$rank == {{expected_rank}} & .data$name != {{alt_species}} ~ "synonym",
-                                                TRUE ~ .data$status))
-
-    }
 
     return(species_df)
 

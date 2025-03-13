@@ -190,9 +190,7 @@ add_species <- function(taxa) {
                                           .data$db == "https://euring.org" ~ "speciesEURINGCode")) |>
     tidyr::pivot_wider(values_from = "id",
                        names_from = "db") |>
-    dplyr::mutate("speciesEOLpageID" = as.numeric(.data$speciesEOLpageID),
-                  "speciesTSN" = as.numeric(.data$speciesTSN),
-                  "speciesGBIFID" = as.numeric(.data$speciesGBIFID)) |>
+    dplyr::mutate(dplyr::across(tidyselect::any_of(c("speciesEOLpageID", "speciesTSN", "speciesGBIFID")), as.numeric)) |>
     dplyr::rename("scientificName" = "name")
 
   # Add missing info authorship & vernacular name
