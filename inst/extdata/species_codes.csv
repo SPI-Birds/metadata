@@ -13,10 +13,10 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10012,LOPCRI,14540,45515262,3W3VB,2487883,560873,Lophophanes cristatus,"Linnaeus, 1758",European crested tit,species
 10013,EMBMEL,18810,45515773,6F7GC,9613112,554227,Emberiza melanocephala,"Scopoli, 1769",Black-headed bunting,species
 10014,PRUMOD,10840,45515701,4N8CC,5231763,562489,Prunella modularis,"Linnaeus, 1758",Dunnock,species
-10015,COLMON,15600,45510000,X733,6100954,916629,Coloeus monedula,"Linnaeus, 1758",Western jackdaw,species
+10015,CORMON,15600,45510000,X733,6100954,916629,Corvus monedula,"Linnaeus, 1758",Western jackdaw,species
 10016,CERFAM,14860,45513691,5XN9F,2487603,178795,Certhia familiaris,"Linnaeus, 1758",Eurasian treecreeper,species
 10017,STRALU,07610,45518936,532G9,9282206,555428,Strix aluco,"Linnaeus, 1758",Tawny owl,species
-10018,SITVAR,14570,1052001,NA,7341813,NA,Sittiparus varius,"Temminck & Schlegel, 1847",Varied tit,species
+10018,POEVAR,14570,1052001,NA,7341813,916510,Poecile varius,"Temminck & Schlegel, 1847",Varied tit,species
 10019,PARMIN,NA,45518810,75SW7,5844847,916512,Parus minor,"Temminck & Schlegel, 1848",Japanese tit,species
 10020,STEHIR,06150,45509327,6ZSCT,9367409,176888,Sterna hirundo,"Linnaeus, 1758",Common tern,species
 10021,THACHL,00151,45511277,7C5GX,2481399,554452,Thalassarche chlororhynchos,"Gmelin, 1789",Atlantic yellow-nosed albatross,species
@@ -58,7 +58,7 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10057,LUSCAL,NA,NA,3WFW3,2492537,179820,Luscinia calliope,"Pallas, 1776",Siberian rubythroat,species
 10058,HIRRUS,09920,45511466,3M4S7,9515886,178448,Hirundo rustica,"Linnaeus, 1758",Barn swallow,species
 10059,FALAMU,03080,45514163,3DTFM,2480998,560066,Falco amurensis,"Radde, 1863",Amur falcon,species
-10060,PICSER,NA,51507883,NA,10704098,NA,Pica serica,"Gould, 1845",Oriental magpie,species
+10060,PPSERI,NA,51507883,7KMFC,10704098,924168,Pica pica serica,"Gould, 1845",Oriental magpie,subspecies
 10061,LLLIMO,05321,1227666,NA,6177939,176693,Limosa limosa limosa,"Linnaeus, 1758",Western black-tailed godwit,subspecies
 10062,NUMPHA,05380,45509190,483T6,2481784,176599,Numenius phaeopus,"Linnaeus, 1758",Eurasian whimbrel,species
 10063,BUCLEA,NA,1048004,NMVD,2476041,554468,Bucorvus leadbeateri,"Vigors, 1825",Southern ground hornbill,species
@@ -88,4 +88,4 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10087,CORGAR,08410,45513609,5ZZQS,2475365,554518,Coracias garrulus,"Linnaeus, 1758",European roller,species
 10088,OTUSCO,07390,45518929,4B8JH,2497701,555376,Otus scops,"Linnaeus, 1758",Eurasian scops owl,species
 10089,ATHNOC,07570,45517847,687BR,2497266,555471,Athene noctua,"Scopoli, 1769",Little owl,species
-10090,CALBOR,00361,45511301,NA,11356620,NA,Calonectris borealis,"Cory, 1881",Cory's shearwater,species
+10090,CALBOR,00361,45511301,D5KBW,11356620,1255047,Calonectris borealis,"Cory, 1881",Cory's shearwater,species
