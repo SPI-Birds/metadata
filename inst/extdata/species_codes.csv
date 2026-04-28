@@ -89,3 +89,5 @@ speciesCode,speciesID,speciesEURINGCode,speciesEOLpageID,speciesCOLID,speciesGBI
 10088,OTUSCO,07390,45518929,4B8JH,2497701,555376,Otus scops,"Linnaeus, 1758",Eurasian scops owl,species
 10089,ATHNOC,07570,45517847,687BR,2497266,555471,Athene noctua,"Scopoli, 1769",Little owl,species
 10090,CALBOR,00361,45511301,D5KBW,11356620,1255047,Calonectris borealis,"Cory, 1881",Cory's shearwater,species
+10091,SPIPUS,18210,45511210,6ZCJC,2492096,179443,Spizella pusilla,"A.Wilson, 1810",Field sparrow,species
+10092,MONNIV,16110,45513737,44B99,2492371,561220,Montifringilla nivalis,"Linnaeus, 1766",White-winged snowfinch,species

@@ -120,7 +120,10 @@ get_taxon_ids <- function(species) {
 
     # Get taxonomic classifications
     # - GBIF
-    gbif_class <- rbind(taxize::classification(gbif_key$usagekey, db = "gbif")) %>%
+    gbif_try <- try(taxize::classification(gbif_key$usagekey, db = "gbif"))
+    if(class(gbif_try) == "try-error") gbif_try <- try(taxize::classification(gbif_key$usagekey, db = "gbif"))
+
+    gbif_class <- rbind(gbif_try) %>%
       dplyr::mutate("db" = "https://www.gbif.org",
                     "id" = as.character(.data$id))
 
