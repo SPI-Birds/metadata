@@ -33,10 +33,11 @@ Imports:
     rvest (>= 1.0.4),
     stringi (>= 1.8.4),
     stringr (>= 1.5.1),
-    taxize (>= 0.9.100),
+    taxize (>= 0.10.1),
     tibble (>= 3.2.1),
     tidyr (>= 1.3.1),
     tidyselect (>= 1.2.1),
     uuid (>= 1.2.0),
-    webshot (>= 0.5.5),
+    webshot (>= 0.5.5)
+Suggests:
     WikidataQueryServiceR (>= 1.0.0)
